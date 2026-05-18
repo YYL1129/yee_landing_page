@@ -145,6 +145,22 @@ h1 {
   text-shadow: 0 0 60px rgba(105, 231, 255, 0.24);
 }
 
+.typewriter {
+  position: relative;
+}
+
+.typewriter.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 0.08em;
+  height: 0.86em;
+  margin-left: 0.12em;
+  background: var(--cyan);
+  box-shadow: 0 0 18px rgba(105, 231, 255, 0.65);
+  vertical-align: -0.06em;
+  animation: cursorBlink 0.75s steps(2, start) infinite;
+}
+
 .hero-role {
   max-width: 16ch;
   margin-bottom: 1.1rem;
@@ -238,10 +254,11 @@ h3 {
 
 .radar {
   position: absolute;
-  top: 0;
-  right: 6%;
-  width: 18rem;
-  height: 18rem;
+  z-index: 0;
+  top: -0.6rem;
+  right: 4%;
+  width: 19.5rem;
+  height: 19.5rem;
   border: 1px solid rgba(105, 231, 255, 0.28);
   border-radius: 50%;
   background:
@@ -288,8 +305,8 @@ h3 {
 
 .node {
   position: absolute;
-  z-index: 2;
-  padding: 0.42rem 0.55rem;
+  z-index: 1;
+  padding: 0.45rem 0.62rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   background: rgba(3, 5, 12, 0.74);
@@ -301,31 +318,37 @@ h3 {
 
 .node-a {
   top: 18%;
-  left: 28%;
+  left: 23%;
   color: var(--green);
 }
 
 .node-b {
-  top: 32%;
-  right: 17%;
+  top: 34%;
+  right: 18%;
   color: var(--cyan);
 }
 
 .node-c {
-  bottom: 23%;
-  left: 8%;
+  top: 7%;
+  left: 38%;
+  width: 9.8rem;
+  max-width: 9.8rem;
+  white-space: normal;
+  line-height: 1.15;
+  text-align: center;
   color: var(--amber);
 }
 
 .node-d {
-  right: 25%;
-  bottom: 17%;
+  top: 41%;
+  right: 6%;
+  bottom: auto;
   color: var(--coral);
 }
 
 .mission-panel {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: min(30rem, 100%);
   margin-top: 6rem;
   border: 1px solid var(--line);
@@ -475,6 +498,12 @@ h3 {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes cursorBlink {
+  50% {
+    opacity: 0;
   }
 }
 
