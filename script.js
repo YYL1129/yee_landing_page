@@ -110,9 +110,9 @@ async function runTypewriter() {
   }
 
   for (const element of typeTargets) {
-    const speed = element.classList.contains("hero-text") ? 12 : 34;
+    const speed = element.classList.contains("hero-text") ? 28 : 62;
     await typeLine(element, speed);
-    await new Promise((resolve) => setTimeout(resolve, 180));
+    await new Promise((resolve) => setTimeout(resolve, 320));
   }
 }
 
