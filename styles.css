@@ -323,8 +323,9 @@ h3 {
 }
 
 .node-b {
-  top: 31%;
-  right: 14%;
+  top: 29%;
+  left: 12%;
+  right: auto;
   color: var(--cyan);
 }
 
@@ -340,8 +341,8 @@ h3 {
 }
 
 .node-d {
-  top: 42%;
-  right: 2%;
+  top: 25%;
+  right: 3%;
   bottom: auto;
   color: var(--coral);
 }
