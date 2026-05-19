@@ -496,6 +496,14 @@ h3 {
     var(--panel);
 }
 
+.project-highlight {
+  border-color: rgba(255, 209, 102, 0.28);
+  background:
+    linear-gradient(135deg, rgba(255, 209, 102, 0.1), transparent 42%),
+    linear-gradient(315deg, rgba(105, 231, 255, 0.08), transparent 46%),
+    var(--panel);
+}
+
 .featured-skill h3 {
   color: var(--cyan);
   font-family: "JetBrains Mono", monospace;
@@ -505,6 +513,11 @@ h3 {
 .featured-skill p {
   color: var(--muted);
   line-height: 1.65;
+}
+
+.featured-skill code {
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
 }
 
 .skill-tags {
