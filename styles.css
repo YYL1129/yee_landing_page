@@ -413,6 +413,7 @@ h3 {
 }
 
 .section {
+  scroll-margin-top: 8.5rem;
   padding: clamp(3.5rem, 7vw, 6rem) 0;
   border-top: 1px solid var(--line);
 }
@@ -481,6 +482,49 @@ h3 {
   line-height: 1.55;
 }
 
+.featured-skill {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding: 1.35rem;
+  border: 1px solid rgba(105, 231, 255, 0.24);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(141, 255, 181, 0.1), transparent 42%),
+    linear-gradient(315deg, rgba(255, 209, 102, 0.08), transparent 46%),
+    var(--panel);
+}
+
+.featured-skill h3 {
+  color: var(--cyan);
+  font-family: "JetBrains Mono", monospace;
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+}
+
+.featured-skill p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 0.65rem;
+}
+
+.skill-tags span {
+  display: inline-flex;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
 .contact-section {
   display: flex;
   align-items: center;
@@ -532,6 +576,10 @@ h3 {
 
   .skill-matrix {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured-skill {
+    grid-template-columns: 1fr;
   }
 
   h1 {
