@@ -3,7 +3,6 @@ const ctx = canvas.getContext("2d");
 const pointer = { x: 0, y: 0 };
 let stars = [];
 let links = [];
-const typeTargets = document.querySelectorAll("[data-type-text]");
 
 function resizeCanvas() {
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -88,34 +87,5 @@ window.addEventListener("pointermove", (event) => {
   pointer.y = event.clientY;
 });
 
-async function typeLine(element, speed = 34) {
-  const text = element.dataset.typeText || "";
-  element.textContent = "";
-  element.classList.add("is-typing");
-
-  for (let index = 0; index <= text.length; index += 1) {
-    element.textContent = text.slice(0, index);
-    await new Promise((resolve) => setTimeout(resolve, speed));
-  }
-
-  element.classList.remove("is-typing");
-}
-
-async function runTypewriter() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    typeTargets.forEach((element) => {
-      element.textContent = element.dataset.typeText || "";
-    });
-    return;
-  }
-
-  for (const element of typeTargets) {
-    const speed = element.classList.contains("hero-text") ? 28 : 62;
-    await typeLine(element, speed);
-    await new Promise((resolve) => setTimeout(resolve, 320));
-  }
-}
-
 resizeCanvas();
 draw();
-runTypewriter();
