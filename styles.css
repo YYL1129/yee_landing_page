@@ -145,22 +145,6 @@ h1 {
   text-shadow: 0 0 60px rgba(105, 231, 255, 0.24);
 }
 
-.typewriter {
-  position: relative;
-}
-
-.typewriter.is-typing::after {
-  content: "";
-  display: inline-block;
-  width: 0.08em;
-  height: 0.86em;
-  margin-left: 0.12em;
-  background: var(--cyan);
-  box-shadow: 0 0 18px rgba(105, 231, 255, 0.65);
-  vertical-align: -0.06em;
-  animation: cursorBlink 0.75s steps(2, start) infinite;
-}
-
 .hero-role {
   max-width: 16ch;
   margin-bottom: 1.1rem;
@@ -192,6 +176,14 @@ h3 {
 
 .hero-text {
   max-width: 38rem;
+}
+
+.learning-highlight {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--green);
+  font-weight: 800;
+  animation: highlightPulse 3.2s ease-in-out infinite;
 }
 
 .trust-strip {
@@ -563,15 +555,22 @@ h3 {
   }
 }
 
-@keyframes cursorBlink {
-  50% {
-    opacity: 0;
-  }
-}
-
 @keyframes rotate {
   to {
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes highlightPulse {
+  0%,
+  100% {
+    color: var(--green);
+    text-shadow: 0 0 12px rgba(141, 255, 181, 0.2);
+  }
+
+  50% {
+    color: var(--cyan);
+    text-shadow: 0 0 22px rgba(105, 231, 255, 0.5);
   }
 }
 
