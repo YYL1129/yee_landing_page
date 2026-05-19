@@ -530,6 +530,36 @@ h3 {
   font-weight: 800;
 }
 
+.quote-section {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.quote-section div {
+  width: min(52rem, 100%);
+}
+
+.quote-section blockquote {
+  margin: 0;
+}
+
+.quote-section blockquote p {
+  margin: 0 auto 1rem;
+  color: var(--text);
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.quote-section cite {
+  color: var(--amber);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.88rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
 .contact-section {
   display: flex;
   align-items: center;
