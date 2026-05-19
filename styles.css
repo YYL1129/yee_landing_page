@@ -560,9 +560,76 @@ h3 {
   font-weight: 800;
 }
 
+.library-console {
+  position: relative;
+  padding: 1rem;
+  border: 1px solid rgba(105, 231, 255, 0.22);
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(105, 231, 255, 0.12), transparent 20rem),
+    radial-gradient(circle at 82% 0%, rgba(141, 255, 181, 0.1), transparent 18rem),
+    linear-gradient(135deg, rgba(9, 14, 28, 0.88), rgba(4, 9, 20, 0.92));
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.library-console::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(105, 231, 255, 0.08) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(105, 231, 255, 0.06) 0 1px, transparent 1px 100%);
+  background-size: 4rem 4rem;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.library-console::after {
+  content: "";
+  position: absolute;
+  width: 26rem;
+  height: 26rem;
+  right: -7rem;
+  top: -8rem;
+  border: 1px solid rgba(105, 231, 255, 0.18);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 4rem rgba(105, 231, 255, 0.025),
+    inset 0 0 0 8rem rgba(141, 255, 181, 0.025);
+  pointer-events: none;
+}
+
+.console-status,
+.console-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.console-status {
+  padding: 0 0 1rem;
+}
+
+.console-footer {
+  padding: 1rem 0 0;
+  color: var(--muted);
+}
+
 .book-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   perspective: 1200px;
 }
@@ -572,36 +639,26 @@ h3 {
   min-width: 0;
 }
 
-.book-card::before {
-  content: attr(data-code);
-  position: absolute;
-  top: 0.8rem;
-  right: 0.8rem;
-  z-index: 2;
-  color: rgba(255, 255, 255, 0.62);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
 .book-cover {
   position: relative;
-  display: flex;
-  min-height: 16rem;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  min-height: 15.5rem;
+  align-content: space-between;
+  gap: 1.1rem;
   padding: 1rem;
-  border: 1px solid rgba(105, 231, 255, 0.22);
+  border: 1px solid rgba(105, 231, 255, 0.24);
   border-radius: 8px;
   overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 36%),
+    linear-gradient(160deg, rgba(12, 19, 39, 0.95), rgba(4, 8, 18, 0.98));
   transform: translateZ(0);
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.26),
+    0 20px 60px rgba(0, 0, 0, 0.26),
     inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
@@ -610,9 +667,9 @@ h3 {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0 1px, transparent 1px 100%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 100%);
-  background-size: 2.2rem 2.2rem;
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 100%);
+  background-size: 2.5rem 2.5rem;
   opacity: 0.18;
   pointer-events: none;
 }
@@ -622,93 +679,132 @@ h3 {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 22%),
-    linear-gradient(180deg, transparent 0 42%, rgba(105, 231, 255, 0.26) 44%, transparent 47%),
-    radial-gradient(circle at 75% 18%, rgba(255, 255, 255, 0.22), transparent 6rem);
-  background-size: auto, 100% 220%, auto;
-  background-position: 0 0, 0 -120%, 0 0;
+    linear-gradient(180deg, transparent 0 36%, rgba(105, 231, 255, 0.28) 39%, transparent 43%),
+    radial-gradient(circle at 84% 20%, rgba(141, 255, 181, 0.22), transparent 5rem);
+  background-size: 100% 240%, auto;
+  background-position: 0 -140%, 0 0;
   pointer-events: none;
   transition: background-position 420ms ease;
 }
 
-.book-cover span,
+.book-topline,
 .book-cover strong,
-.book-cover small {
+.book-cover small,
+.book-cover code {
   position: relative;
   z-index: 1;
 }
 
-.book-cover span {
-  width: fit-content;
-  max-width: 100%;
-  padding: 0.28rem 0.45rem;
-  border: 1px solid rgba(141, 255, 181, 0.28);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.28);
-  color: var(--green);
+.book-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.book-topline span,
+.book-topline em,
+.book-cover small,
+.book-cover code {
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.62rem;
+  font-size: 0.7rem;
+  font-style: normal;
   font-weight: 800;
-  line-height: 1;
-  text-transform: uppercase;
+}
+
+.book-topline span {
+  min-width: 0;
+  color: var(--green);
+  overflow-wrap: anywhere;
+}
+
+.book-topline em {
+  flex: 0 0 auto;
+  padding: 0.22rem 0.42rem;
+  border: 1px solid rgba(141, 255, 181, 0.3);
+  border-radius: 999px;
+  color: var(--green);
+  background: rgba(0, 0, 0, 0.24);
 }
 
 .book-cover strong {
+  max-width: 18rem;
   color: #fff;
-  font-size: clamp(1.05rem, 1.7vw, 1.45rem);
-  line-height: 1.05;
-  text-shadow: 0 0 18px rgba(105, 231, 255, 0.18);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.02;
+  text-shadow: 0 0 22px rgba(105, 231, 255, 0.2);
 }
 
 .book-cover small {
-  color: rgba(255, 255, 255, 0.76);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.book-cover code {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgba(105, 231, 255, 0.18);
+  border-radius: 6px;
+  color: var(--cyan);
+  background: rgba(0, 0, 0, 0.26);
+  white-space: normal;
+}
+
+.book-card::before {
+  content: attr(data-code);
+  position: absolute;
+  right: 1rem;
+  bottom: 3.25rem;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.5);
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
 }
 
 .book-card:hover .book-cover {
-  border-color: rgba(141, 255, 181, 0.72);
-  transform: translateY(-0.45rem) rotateX(3deg);
+  border-color: rgba(141, 255, 181, 0.74);
+  transform: translateY(-0.35rem) rotateX(2deg);
   box-shadow:
-    0 30px 90px rgba(0, 0, 0, 0.34),
-    0 0 34px rgba(105, 231, 255, 0.18),
+    0 28px 80px rgba(0, 0, 0, 0.36),
+    0 0 36px rgba(105, 231, 255, 0.16),
     inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .book-card:hover .book-cover::after {
-  background-position: 0 0, 0 40%, 0 0;
+  background-position: 0 40%, 0 0;
 }
 
 .book-card h3 {
-  margin: 0.8rem 0 0;
+  margin: 0.75rem 0 0;
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.3;
 }
 
 .cover-a .book-cover {
-  background: linear-gradient(150deg, #202c5f, #6933a6 52%, #1c122d);
+  border-left: 3px solid #a986ff;
 }
 
 .cover-b .book-cover {
-  background: linear-gradient(150deg, #16233f, #2e8f95 58%, #07111d);
+  border-left: 3px solid #69e7ff;
 }
 
 .cover-c .book-cover {
-  background: linear-gradient(150deg, #301b3f, #b3476d 55%, #190c18);
+  border-left: 3px solid #ff7aa8;
 }
 
 .cover-d .book-cover {
-  background: linear-gradient(150deg, #123a3a, #2f8f5b 55%, #081a16);
+  border-left: 3px solid #8dffb5;
 }
 
 .cover-e .book-cover {
-  background: linear-gradient(150deg, #4a1d2b, #d47c36 56%, #1a0d0c);
+  border-left: 3px solid #ffd166;
 }
 
 .cover-f .book-cover {
-  background: linear-gradient(150deg, #1b2a4a, #d5a642 58%, #18120a);
+  border-left: 3px solid #d5a642;
 }
 
 .contact-section {
@@ -772,7 +868,7 @@ h3 {
   }
 
   .book-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .featured-skill {
@@ -820,11 +916,22 @@ h3 {
   }
 
   .book-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .book-cover {
     min-height: 13.5rem;
+  }
+
+  .library-console {
+    padding: 0.75rem;
+  }
+
+  .console-status,
+  .console-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
   .contact-actions,
