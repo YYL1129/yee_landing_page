@@ -564,10 +564,25 @@ h3 {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1rem;
+  perspective: 1200px;
 }
 
 .book-card {
+  position: relative;
   min-width: 0;
+}
+
+.book-card::before {
+  content: attr(data-code);
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .book-cover {
@@ -577,18 +592,29 @@ h3 {
   flex-direction: column;
   justify-content: space-between;
   padding: 1rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(105, 231, 255, 0.22);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.26);
+  transform: translateZ(0);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.26),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .book-cover::before {
   content: "";
   position: absolute;
-  inset: 0 0 0 0.65rem;
-  width: 1px;
-  background: rgba(255, 255, 255, 0.22);
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 100%);
+  background-size: 2.2rem 2.2rem;
+  opacity: 0.18;
+  pointer-events: none;
 }
 
 .book-cover::after {
@@ -597,21 +623,33 @@ h3 {
   inset: 0;
   background:
     linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 22%),
+    linear-gradient(180deg, transparent 0 42%, rgba(105, 231, 255, 0.26) 44%, transparent 47%),
     radial-gradient(circle at 75% 18%, rgba(255, 255, 255, 0.22), transparent 6rem);
+  background-size: auto, 100% 220%, auto;
+  background-position: 0 0, 0 -120%, 0 0;
   pointer-events: none;
+  transition: background-position 420ms ease;
 }
 
 .book-cover span,
-.book-cover strong {
+.book-cover strong,
+.book-cover small {
   position: relative;
   z-index: 1;
 }
 
 .book-cover span {
-  color: rgba(255, 255, 255, 0.72);
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.28rem 0.45rem;
+  border: 1px solid rgba(141, 255, 181, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--green);
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 800;
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -619,6 +657,27 @@ h3 {
   color: #fff;
   font-size: clamp(1.05rem, 1.7vw, 1.45rem);
   line-height: 1.05;
+  text-shadow: 0 0 18px rgba(105, 231, 255, 0.18);
+}
+
+.book-cover small {
+  color: rgba(255, 255, 255, 0.76);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.book-card:hover .book-cover {
+  border-color: rgba(141, 255, 181, 0.72);
+  transform: translateY(-0.45rem) rotateX(3deg);
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.34),
+    0 0 34px rgba(105, 231, 255, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.book-card:hover .book-cover::after {
+  background-position: 0 0, 0 40%, 0 0;
 }
 
 .book-card h3 {
