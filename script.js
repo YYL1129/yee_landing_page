@@ -3,6 +3,13 @@ const ctx = canvas.getContext("2d");
 const pointer = { x: 0, y: 0 };
 let stars = [];
 let links = [];
+const dailyQuotes = [
+  "Courage is built by continuing when the answer is not clear yet.",
+  "Difficult work becomes smaller when you face it one clear step at a time.",
+  "Progress belongs to the person who keeps learning after the first failure.",
+  "Strong systems are built by people willing to understand the messy details.",
+  "The future favours steady effort, clear thinking, and the nerve to begin."
+];
 
 function resizeCanvas() {
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -87,5 +94,19 @@ window.addEventListener("pointermove", (event) => {
   pointer.y = event.clientY;
 });
 
+function setDailyQuote() {
+  const quote = document.getElementById("daily-quote");
+  const source = document.getElementById("daily-quote-source");
+
+  if (!quote || !source) return;
+
+  const start = new Date(new Date().getFullYear(), 0, 0);
+  const diff = new Date() - start;
+  const day = Math.floor(diff / 86400000);
+  quote.textContent = dailyQuotes[day % dailyQuotes.length];
+  source.textContent = "Churchill-inspired daily reflection";
+}
+
 resizeCanvas();
 draw();
+setDailyQuote();
