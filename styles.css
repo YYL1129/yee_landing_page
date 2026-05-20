@@ -496,6 +496,14 @@ h3 {
     var(--panel);
 }
 
+.customer-highlight {
+  border-color: rgba(169, 134, 255, 0.3);
+  background:
+    linear-gradient(135deg, rgba(169, 134, 255, 0.12), transparent 42%),
+    linear-gradient(315deg, rgba(141, 255, 181, 0.08), transparent 46%),
+    var(--panel);
+}
+
 .featured-skill h3 {
   color: var(--cyan);
   font-family: "JetBrains Mono", monospace;
