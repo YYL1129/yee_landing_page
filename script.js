@@ -10,6 +10,24 @@ const dailyQuotes = [
   "Strong systems are built by people willing to understand the messy details.",
   "The future favours steady effort, clear thinking, and the nerve to begin."
 ];
+const modeProfiles = {
+  builder: {
+    summary: "Building practical tools, automation flows, and support systems for real business problems.",
+    output: "mission: reduce manual work\nstack: Python + web + Salesforce + Make.com\nsignal: practical business systems online"
+  },
+  automation: {
+    summary: "Connecting forms, data, CRM records, and repeatable rules into cleaner digital workflows.",
+    output: "mode: automation\ninputs: leads + reports + files\nresult: fewer manual steps, clearer handoff"
+  },
+  security: {
+    summary: "Thinking about access, risk, suspicious activity, and safer habits when building or supporting systems.",
+    output: "mode: security\nfocus: access + data + user behaviour\nstatus: protect before optimise"
+  },
+  learning: {
+    summary: "Still learning across many fields, but willing to ask clearly, test ideas, and understand the real problem.",
+    output: "mode: learning\nmethod: explore + test + improve\nmindset: beginner, but serious"
+  }
+};
 
 function resizeCanvas() {
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -107,6 +125,107 @@ function setDailyQuote() {
   source.textContent = "Churchill-inspired daily reflection";
 }
 
+function runBootSequence() {
+  const boot = document.querySelector(".boot-screen");
+  const bar = document.querySelector(".boot-progress span");
+  const percent = document.getElementById("boot-percent");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!boot || !bar || !percent || reduceMotion) {
+    document.body.classList.add("booted");
+    return;
+  }
+
+  let progress = 0;
+  const bootTimer = window.setInterval(() => {
+    progress = Math.min(100, progress + Math.floor(Math.random() * 16) + 9);
+    bar.style.width = `${progress}%`;
+    percent.textContent = `${progress}%`;
+
+    if (progress >= 100) {
+      window.clearInterval(bootTimer);
+      window.setTimeout(() => {
+        boot.classList.add("is-complete");
+        document.body.classList.add("booted");
+      }, 360);
+    }
+  }, 130);
+}
+
+function initModeSwitcher() {
+  const activeMode = document.getElementById("active-mode");
+  const summary = document.getElementById("mode-summary");
+  const output = document.getElementById("system-output");
+  const chips = document.querySelectorAll(".mode-chip");
+
+  if (!activeMode || !summary || !output || chips.length === 0) return;
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const mode = chip.dataset.mode;
+      const profile = modeProfiles[mode];
+
+      if (!profile) return;
+
+      chips.forEach((item) => item.classList.remove("active"));
+      chips.forEach((item) => item.setAttribute("aria-pressed", "false"));
+      chip.classList.add("active");
+      chip.setAttribute("aria-pressed", "true");
+      activeMode.textContent = mode;
+      summary.textContent = profile.summary;
+      output.textContent = profile.output;
+    });
+  });
+}
+
+function initRevealObserver() {
+  const items = document.querySelectorAll(
+    ".timeline article, .skill-matrix article, .featured-skill, .library-console, .quote-section blockquote, .contact-section"
+  );
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((item) => item.classList.add("in-view"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.16 }
+  );
+
+  items.forEach((item) => observer.observe(item));
+}
+
+function initCardTilt() {
+  const cards = document.querySelectorAll(".timeline article, .skill-matrix article");
+
+  cards.forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      card.style.setProperty("--tilt-x", `${(-y * 5).toFixed(2)}deg`);
+      card.style.setProperty("--tilt-y", `${(x * 6).toFixed(2)}deg`);
+    });
+
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+    });
+  });
+}
+
 resizeCanvas();
 draw();
 setDailyQuote();
+runBootSequence();
+initModeSwitcher();
+initRevealObserver();
+initCardTilt();
