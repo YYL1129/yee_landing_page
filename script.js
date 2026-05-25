@@ -179,8 +179,11 @@ function initModeSwitcher() {
   const summary = document.getElementById("mode-summary");
   const output = document.getElementById("system-output");
   const chips = document.querySelectorAll(".mode-chip");
+  const studio = document.querySelector(".studio-stage");
 
   if (!activeMode || !summary || !output || chips.length === 0) return;
+
+  if (studio) studio.dataset.mode = "builder";
 
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -196,7 +199,29 @@ function initModeSwitcher() {
       activeMode.textContent = mode;
       summary.textContent = profile.summary;
       output.textContent = profile.output;
+      if (studio) studio.dataset.mode = mode;
+      document.dispatchEvent(new CustomEvent("profile-mode-change", { detail: { mode } }));
     });
+  });
+}
+
+function initStudioPointer() {
+  const studio = document.querySelector(".studio-stage");
+  const cssStudio = document.querySelector(".css-studio");
+
+  if (!studio || !cssStudio) return;
+
+  studio.addEventListener("pointermove", (event) => {
+    const bounds = studio.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    cssStudio.style.setProperty("--room-tilt-y", `${(x * 8).toFixed(2)}deg`);
+    cssStudio.style.setProperty("--room-tilt-x", `${(-y * 5).toFixed(2)}deg`);
+  });
+
+  studio.addEventListener("pointerleave", () => {
+    cssStudio.style.setProperty("--room-tilt-y", "0deg");
+    cssStudio.style.setProperty("--room-tilt-x", "0deg");
   });
 }
 
@@ -249,5 +274,6 @@ draw();
 setDailyQuote();
 runBootSequence();
 initModeSwitcher();
+initStudioPointer();
 initRevealObserver();
 initCardTilt();
