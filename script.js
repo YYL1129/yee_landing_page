@@ -1,8 +1,8 @@
 const canvas = document.getElementById("starfield");
 const ctx = canvas.getContext("2d");
-const pointer = { x: 0, y: 0 };
-let stars = [];
-let links = [];
+const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+let nodes = [];
+
 const dailyQuotes = [
   "Courage is built by continuing when the answer is not clear yet.",
   "Difficult work becomes smaller when you face it one clear step at a time.",
@@ -10,20 +10,25 @@ const dailyQuotes = [
   "Strong systems are built by people willing to understand the messy details.",
   "The future favours steady effort, clear thinking, and the nerve to begin."
 ];
+
 const modeProfiles = {
   builder: {
-    summary: "Building practical tools, automation flows, and support systems for real business problems.",
+    title: "Business Workflow Builder",
+    summary: "Builds practical tools, automation flows, and support systems for real business problems.",
     output: "mission: reduce manual work\nstack: Python + web + Salesforce + Make.com\nsignal: practical business systems online"
   },
   automation: {
-    summary: "Connecting forms, data, CRM records, and repeatable rules into cleaner digital workflows.",
+    title: "Automation Logic Designer",
+    summary: "Connects forms, data, CRM records, and repeatable rules into cleaner digital workflows.",
     output: "mode: automation\ninputs: leads + reports + files\nresult: fewer manual steps, clearer handoff"
   },
   security: {
-    summary: "Thinking about access, risk, suspicious activity, and safer habits when building or supporting systems.",
+    title: "Security-Minded Builder",
+    summary: "Thinks about access, risk, suspicious activity, and safer habits while supporting systems.",
     output: "mode: security\nfocus: access + data + user behaviour\nstatus: protect before optimise"
   },
   learning: {
+    title: "Serious Beginner",
     summary: "Still learning across many fields, but willing to ask clearly, test ideas, and understand the real problem.",
     output: "mode: learning\nmethod: explore + test + improve\nmindset: beginner, but serious"
   }
@@ -37,102 +42,54 @@ function resizeCanvas() {
   canvas.style.height = `${window.innerHeight}px`;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-  const count = Math.floor((window.innerWidth * window.innerHeight) / 8500);
-  stars = Array.from({ length: count }, () => ({
+  const count = Math.max(28, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+  nodes = Array.from({ length: count }, () => ({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
-    radius: Math.random() * 1.7 + 0.3,
-    vx: (Math.random() - 0.5) * 0.18,
-    vy: (Math.random() - 0.5) * 0.18,
-    alpha: Math.random() * 0.45 + 0.18
-  }));
-
-  links = Array.from({ length: Math.max(12, Math.floor(count / 6)) }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    vx: (Math.random() - 0.5) * 0.28,
-    vy: (Math.random() - 0.5) * 0.28
+    vx: (Math.random() - 0.5) * 0.24,
+    vy: (Math.random() - 0.5) * 0.24,
+    radius: Math.random() * 1.5 + 0.5
   }));
 }
 
-function draw() {
+function drawNetwork() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  for (const star of stars) {
-    star.x += star.vx;
-    star.y += star.vy;
+  nodes.forEach((node) => {
+    node.x += node.vx;
+    node.y += node.vy;
 
-    if (star.x < -6 || star.x > window.innerWidth + 6) star.vx *= -1;
-    if (star.y < -6 || star.y > window.innerHeight + 6) star.vy *= -1;
+    if (node.x < -8 || node.x > window.innerWidth + 8) node.vx *= -1;
+    if (node.y < -8 || node.y > window.innerHeight + 8) node.vy *= -1;
 
-    const driftX = (pointer.x - window.innerWidth / 2) * 0.006;
-    const driftY = (pointer.y - window.innerHeight / 2) * 0.006;
+    const pullX = (pointer.x - window.innerWidth / 2) * 0.004;
+    const pullY = (pointer.y - window.innerHeight / 2) * 0.004;
 
     ctx.beginPath();
-    ctx.arc(star.x + driftX, star.y + driftY, star.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(215, 255, 63, ${star.alpha})`;
+    ctx.arc(node.x + pullX, node.y + pullY, node.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(220, 255, 79, 0.45)";
     ctx.fill();
-  }
+  });
 
-  for (let index = 0; index < stars.length; index += 1) {
-    for (let next = index + 1; next < stars.length; next += 1) {
-      const a = stars[index];
-      const b = stars[next];
+  for (let index = 0; index < nodes.length; index += 1) {
+    for (let next = index + 1; next < nodes.length; next += 1) {
+      const a = nodes[index];
+      const b = nodes[next];
       const distance = Math.hypot(a.x - b.x, a.y - b.y);
 
-      if (distance < 96) {
+      if (distance < 145) {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(215, 255, 63, ${0.1 - distance / 1200})`;
+        ctx.strokeStyle = `rgba(101, 232, 255, ${0.16 - distance / 1000})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
     }
   }
 
-  for (const point of links) {
-    point.x += point.vx;
-    point.y += point.vy;
-
-    if (point.x < 0 || point.x > window.innerWidth) point.vx *= -1;
-    if (point.y < 0 || point.y > window.innerHeight) point.vy *= -1;
-
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 1.8, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(88, 240, 255, 0.52)";
-    ctx.fill();
-  }
-
-  for (let index = 0; index < links.length; index += 1) {
-    for (let next = index + 1; next < links.length; next += 1) {
-      const a = links[index];
-      const b = links[next];
-      const distance = Math.hypot(a.x - b.x, a.y - b.y);
-
-      if (distance < 150) {
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(88, 240, 255, ${0.18 - distance / 900})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-    }
-  }
-
-  requestAnimationFrame(draw);
+  requestAnimationFrame(drawNetwork);
 }
-
-window.addEventListener("resize", resizeCanvas);
-window.addEventListener("pointermove", (event) => {
-  pointer.x = event.clientX;
-  pointer.y = event.clientY;
-  document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
-  document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
-  document.documentElement.style.setProperty("--spot-x", `${(event.clientX / window.innerWidth) * 100}%`);
-  document.documentElement.style.setProperty("--spot-y", `${(event.clientY / window.innerHeight) * 100}%`);
-});
 
 function setDailyQuote() {
   const quote = document.getElementById("daily-quote");
@@ -150,40 +107,36 @@ function setDailyQuote() {
 function runBootSequence() {
   const boot = document.querySelector(".boot-screen");
   const bar = document.querySelector(".boot-progress span");
-  const percent = document.getElementById("boot-percent");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!boot || !bar || !percent || reduceMotion) {
+  if (!boot || !bar || reduceMotion) {
     document.body.classList.add("booted");
     return;
   }
 
   let progress = 0;
-  const bootTimer = window.setInterval(() => {
-    progress = Math.min(100, progress + Math.floor(Math.random() * 16) + 9);
+  const timer = window.setInterval(() => {
+    progress = Math.min(100, progress + 14);
     bar.style.width = `${progress}%`;
-    percent.textContent = `${progress}%`;
 
     if (progress >= 100) {
-      window.clearInterval(bootTimer);
+      window.clearInterval(timer);
       window.setTimeout(() => {
         boot.classList.add("is-complete");
         document.body.classList.add("booted");
-      }, 360);
+      }, 260);
     }
-  }, 130);
+  }, 80);
 }
 
 function initModeSwitcher() {
   const activeMode = document.getElementById("active-mode");
+  const title = document.getElementById("mode-title");
   const summary = document.getElementById("mode-summary");
   const output = document.getElementById("system-output");
   const chips = document.querySelectorAll(".mode-chip");
-  const studio = document.querySelector(".studio-stage");
 
-  if (!activeMode || !summary || !output || chips.length === 0) return;
-
-  if (studio) studio.dataset.mode = "builder";
+  if (!activeMode || !title || !summary || !output || chips.length === 0) return;
 
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -192,43 +145,23 @@ function initModeSwitcher() {
 
       if (!profile) return;
 
-      chips.forEach((item) => item.classList.remove("active"));
-      chips.forEach((item) => item.setAttribute("aria-pressed", "false"));
+      chips.forEach((item) => {
+        item.classList.remove("active");
+        item.setAttribute("aria-pressed", "false");
+      });
+
       chip.classList.add("active");
       chip.setAttribute("aria-pressed", "true");
       activeMode.textContent = mode;
+      title.textContent = profile.title;
       summary.textContent = profile.summary;
       output.textContent = profile.output;
-      if (studio) studio.dataset.mode = mode;
-      document.dispatchEvent(new CustomEvent("profile-mode-change", { detail: { mode } }));
     });
   });
 }
 
-function initStudioPointer() {
-  const studio = document.querySelector(".studio-stage");
-  const cssStudio = document.querySelector(".css-studio");
-
-  if (!studio || !cssStudio) return;
-
-  studio.addEventListener("pointermove", (event) => {
-    const bounds = studio.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    cssStudio.style.setProperty("--room-tilt-y", `${(x * 8).toFixed(2)}deg`);
-    cssStudio.style.setProperty("--room-tilt-x", `${(-y * 5).toFixed(2)}deg`);
-  });
-
-  studio.addEventListener("pointerleave", () => {
-    cssStudio.style.setProperty("--room-tilt-y", "0deg");
-    cssStudio.style.setProperty("--room-tilt-x", "0deg");
-  });
-}
-
 function initRevealObserver() {
-  const items = document.querySelectorAll(
-    ".timeline article, .skill-matrix article, .featured-skill, .library-console, .quote-section blockquote, .contact-section"
-  );
+  const items = document.querySelectorAll(".bento-card, .book-card, .contact-section");
 
   if (!("IntersectionObserver" in window)) {
     items.forEach((item) => item.classList.add("in-view"));
@@ -244,22 +177,24 @@ function initRevealObserver() {
         }
       });
     },
-    { threshold: 0.16 }
+    { threshold: 0.12 }
   );
 
   items.forEach((item) => observer.observe(item));
 }
 
-function initCardTilt() {
-  const cards = document.querySelectorAll(".timeline article, .skill-matrix article");
+function initCardEffects() {
+  const cards = document.querySelectorAll(".bento-card");
 
   cards.forEach((card) => {
     card.addEventListener("pointermove", (event) => {
       const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
-      card.style.setProperty("--tilt-x", `${(-y * 5).toFixed(2)}deg`);
-      card.style.setProperty("--tilt-y", `${(x * 6).toFixed(2)}deg`);
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      card.style.setProperty("--card-x", `${x * 100}%`);
+      card.style.setProperty("--card-y", `${y * 100}%`);
+      card.style.setProperty("--tilt-x", `${((0.5 - y) * 4).toFixed(2)}deg`);
+      card.style.setProperty("--tilt-y", `${((x - 0.5) * 5).toFixed(2)}deg`);
     });
 
     card.addEventListener("pointerleave", () => {
@@ -269,11 +204,20 @@ function initCardTilt() {
   });
 }
 
+window.addEventListener("resize", resizeCanvas);
+window.addEventListener("pointermove", (event) => {
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
+  document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
+  document.documentElement.style.setProperty("--spot-x", `${(event.clientX / window.innerWidth) * 100}%`);
+  document.documentElement.style.setProperty("--spot-y", `${(event.clientY / window.innerHeight) * 100}%`);
+});
+
 resizeCanvas();
-draw();
+drawNetwork();
 setDailyQuote();
 runBootSequence();
 initModeSwitcher();
-initStudioPointer();
 initRevealObserver();
-initCardTilt();
+initCardEffects();
