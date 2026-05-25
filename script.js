@@ -1,223 +1,140 @@
-const canvas = document.getElementById("starfield");
+const canvas = document.getElementById("neural-field");
 const ctx = canvas.getContext("2d");
-const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-let nodes = [];
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let width = 0;
+let height = 0;
+let particles = [];
+let pointer = { x: 0, y: 0, active: false };
 
-const dailyQuotes = [
-  "Courage is built by continuing when the answer is not clear yet.",
-  "Difficult work becomes smaller when you face it one clear step at a time.",
-  "Progress belongs to the person who keeps learning after the first failure.",
-  "Strong systems are built by people willing to understand the messy details.",
-  "The future favours steady effort, clear thinking, and the nerve to begin."
+const quotes = [
+  ["Courage is built by continuing when the answer is not clear yet.", "Churchill-inspired daily reflection"],
+  ["Improve the system, then improve yourself with it.", "Daily systems note"],
+  ["A beginner who keeps testing becomes dangerous in the best way.", "Learning note"],
+  ["The task is not to look smart. The task is to understand.", "Practical reminder"]
 ];
-
-const modeProfiles = {
-  builder: {
-    title: "Business Workflow Builder",
-    summary: "Builds practical tools, automation flows, and support systems for real business problems.",
-    output: "mission: reduce manual work\nstack: Python + web + Salesforce + Make.com\nsignal: practical business systems online"
-  },
-  automation: {
-    title: "Automation Logic Designer",
-    summary: "Connects forms, data, CRM records, and repeatable rules into cleaner digital workflows.",
-    output: "mode: automation\ninputs: leads + reports + files\nresult: fewer manual steps, clearer handoff"
-  },
-  security: {
-    title: "Security-Minded Builder",
-    summary: "Thinks about access, risk, suspicious activity, and safer habits while supporting systems.",
-    output: "mode: security\nfocus: access + data + user behaviour\nstatus: protect before optimise"
-  },
-  learning: {
-    title: "Serious Beginner",
-    summary: "Still learning across many fields, but willing to ask clearly, test ideas, and understand the real problem.",
-    output: "mode: learning\nmethod: explore + test + improve\nmindset: beginner, but serious"
-  }
-};
 
 function resizeCanvas() {
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.floor(window.innerWidth * ratio);
-  canvas.height = Math.floor(window.innerHeight * ratio);
-  canvas.style.width = `${window.innerWidth}px`;
-  canvas.style.height = `${window.innerHeight}px`;
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = Math.floor(width * ratio);
+  canvas.height = Math.floor(height * ratio);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-  const count = Math.max(28, Math.floor((window.innerWidth * window.innerHeight) / 12000));
-  nodes = Array.from({ length: count }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    vx: (Math.random() - 0.5) * 0.24,
-    vy: (Math.random() - 0.5) * 0.24,
-    radius: Math.random() * 1.5 + 0.5
+  const count = Math.floor(Math.min(120, Math.max(48, width / 12)));
+  particles = Array.from({ length: count }, (_, index) => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    vx: (Math.random() - 0.5) * 0.38,
+    vy: (Math.random() - 0.5) * 0.38,
+    size: index % 7 === 0 ? 2.2 : 1.1
   }));
 }
 
-function drawNetwork() {
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+function drawField() {
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "rgba(8, 9, 13, 0.12)";
+  ctx.fillRect(0, 0, width, height);
 
-  nodes.forEach((node) => {
-    node.x += node.vx;
-    node.y += node.vy;
+  particles.forEach((particle) => {
+    if (!reduceMotion) {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+    }
 
-    if (node.x < -8 || node.x > window.innerWidth + 8) node.vx *= -1;
-    if (node.y < -8 || node.y > window.innerHeight + 8) node.vy *= -1;
+    if (particle.x < 0 || particle.x > width) particle.vx *= -1;
+    if (particle.y < 0 || particle.y > height) particle.vy *= -1;
 
-    const pullX = (pointer.x - window.innerWidth / 2) * 0.004;
-    const pullY = (pointer.y - window.innerHeight / 2) * 0.004;
+    if (pointer.active) {
+      const dx = pointer.x - particle.x;
+      const dy = pointer.y - particle.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance < 170 && distance > 1) {
+        particle.x -= dx * 0.0016;
+        particle.y -= dy * 0.0016;
+      }
+    }
 
     ctx.beginPath();
-    ctx.arc(node.x + pullX, node.y + pullY, node.radius, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(220, 255, 79, 0.45)";
+    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(200, 255, 47, 0.72)";
     ctx.fill();
   });
 
-  for (let index = 0; index < nodes.length; index += 1) {
-    for (let next = index + 1; next < nodes.length; next += 1) {
-      const a = nodes[index];
-      const b = nodes[next];
+  for (let i = 0; i < particles.length; i += 1) {
+    for (let j = i + 1; j < particles.length; j += 1) {
+      const a = particles[i];
+      const b = particles[j];
       const distance = Math.hypot(a.x - b.x, a.y - b.y);
-
-      if (distance < 145) {
+      if (distance < 125) {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(101, 232, 255, ${0.16 - distance / 1000})`;
+        ctx.strokeStyle = `rgba(69, 232, 255, ${0.16 - distance / 900})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
     }
   }
 
-  requestAnimationFrame(drawNetwork);
+  requestAnimationFrame(drawField);
 }
 
 function setDailyQuote() {
-  const quote = document.getElementById("daily-quote");
-  const source = document.getElementById("daily-quote-source");
-
-  if (!quote || !source) return;
-
-  const start = new Date(new Date().getFullYear(), 0, 0);
-  const diff = new Date() - start;
-  const day = Math.floor(diff / 86400000);
-  quote.textContent = dailyQuotes[day % dailyQuotes.length];
-  source.textContent = "Churchill-inspired daily reflection";
+  const quote = quotes[new Date().getDate() % quotes.length];
+  document.getElementById("daily-quote").textContent = quote[0];
+  document.getElementById("daily-source").textContent = quote[1];
 }
 
-function runBootSequence() {
-  const boot = document.querySelector(".boot-screen");
-  const bar = document.querySelector(".boot-progress span");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (!boot || !bar || reduceMotion) {
-    document.body.classList.add("booted");
-    return;
-  }
-
-  let progress = 0;
-  const timer = window.setInterval(() => {
-    progress = Math.min(100, progress + 14);
-    bar.style.width = `${progress}%`;
-
-    if (progress >= 100) {
-      window.clearInterval(timer);
-      window.setTimeout(() => {
-        boot.classList.add("is-complete");
-        document.body.classList.add("booted");
-      }, 260);
-    }
-  }, 80);
-}
-
-function initModeSwitcher() {
-  const activeMode = document.getElementById("active-mode");
-  const title = document.getElementById("mode-title");
-  const summary = document.getElementById("mode-summary");
-  const output = document.getElementById("system-output");
-  const chips = document.querySelectorAll(".mode-chip");
-
-  if (!activeMode || !title || !summary || !output || chips.length === 0) return;
-
-  chips.forEach((chip) => {
-    chip.addEventListener("click", () => {
-      const mode = chip.dataset.mode;
-      const profile = modeProfiles[mode];
-
-      if (!profile) return;
-
-      chips.forEach((item) => {
-        item.classList.remove("active");
-        item.setAttribute("aria-pressed", "false");
-      });
-
-      chip.classList.add("active");
-      chip.setAttribute("aria-pressed", "true");
-      activeMode.textContent = mode;
-      title.textContent = profile.title;
-      summary.textContent = profile.summary;
-      output.textContent = profile.output;
+function bindMissionOrb() {
+  const label = document.getElementById("focus-label");
+  const buttons = document.querySelectorAll(".mission-orb button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      buttons.forEach((item) => item.classList.remove("is-active"));
+      button.classList.add("is-active");
+      label.textContent = button.dataset.focus;
     });
   });
 }
 
-function initRevealObserver() {
-  const items = document.querySelectorAll(".bento-card, .book-card, .contact-section");
+function bindSkillMap() {
+  const output = document.getElementById("skill-output");
+  const buttons = document.querySelectorAll(".skill-grid button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      buttons.forEach((item) => item.classList.remove("is-active"));
+      button.classList.add("is-active");
+      output.value = `${button.textContent}: ${button.dataset.skill}`;
+      output.textContent = output.value;
+    });
+  });
+}
 
-  if (!("IntersectionObserver" in window)) {
-    items.forEach((item) => item.classList.add("in-view"));
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
-
+function revealOnScroll() {
+  const items = document.querySelectorAll(".panel, .contact-panel, .mission-orb");
+  items.forEach((item) => item.classList.add("reveal"));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add("in-view");
+    });
+  }, { threshold: 0.16 });
   items.forEach((item) => observer.observe(item));
-}
-
-function initCardEffects() {
-  const cards = document.querySelectorAll(".bento-card");
-
-  cards.forEach((card) => {
-    card.addEventListener("pointermove", (event) => {
-      const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = (event.clientY - rect.top) / rect.height;
-      card.style.setProperty("--card-x", `${x * 100}%`);
-      card.style.setProperty("--card-y", `${y * 100}%`);
-      card.style.setProperty("--tilt-x", `${((0.5 - y) * 4).toFixed(2)}deg`);
-      card.style.setProperty("--tilt-y", `${((x - 0.5) * 5).toFixed(2)}deg`);
-    });
-
-    card.addEventListener("pointerleave", () => {
-      card.style.setProperty("--tilt-x", "0deg");
-      card.style.setProperty("--tilt-y", "0deg");
-    });
-  });
 }
 
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("pointermove", (event) => {
-  pointer.x = event.clientX;
-  pointer.y = event.clientY;
-  document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
-  document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
-  document.documentElement.style.setProperty("--spot-x", `${(event.clientX / window.innerWidth) * 100}%`);
-  document.documentElement.style.setProperty("--spot-y", `${(event.clientY / window.innerHeight) * 100}%`);
+  pointer = { x: event.clientX, y: event.clientY, active: true };
+});
+window.addEventListener("pointerleave", () => {
+  pointer.active = false;
 });
 
 resizeCanvas();
-drawNetwork();
 setDailyQuote();
-runBootSequence();
-initModeSwitcher();
-initRevealObserver();
-initCardEffects();
+bindMissionOrb();
+bindSkillMap();
+revealOnScroll();
+drawField();
