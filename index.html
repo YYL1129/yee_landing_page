@@ -7,150 +7,159 @@
       name="description"
       content="Yee's interactive IT, automation, Python, Salesforce, machine learning, and cyber security digital resume."
     >
-    <title>Yee | Interactive IT Profile</title>
+    <title>Yee | Digital Workbench</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@500;700;900&display=swap"
       rel="stylesheet"
     >
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <canvas id="neural-field" aria-hidden="true"></canvas>
-    <div class="scanlight" aria-hidden="true"></div>
+    <canvas id="silk-canvas" aria-hidden="true"></canvas>
 
-    <header class="topbar">
-      <a class="identity" href="#launch" aria-label="Go to top">
+    <header class="nav-shell">
+      <a class="logo" href="#top" aria-label="Go to top">
         <span>Y</span>
         <strong>Yee</strong>
       </a>
       <nav aria-label="Main navigation">
-        <a href="#systems">Systems</a>
+        <a href="#method">Method</a>
         <a href="#skills">Skills</a>
         <a href="#proof">Proof</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
 
-    <main id="launch">
-      <section class="launch">
-        <div class="launch-copy">
-          <p class="kicker">Malaysia / IT / Automation / Secure workflows</p>
+    <main id="top">
+      <section class="poster">
+        <div class="poster-code" aria-hidden="true">
+          <span>digital.workbench</span>
+          <span>automation.logic</span>
+          <span>secure.flow</span>
+        </div>
+
+        <div class="poster-copy">
+          <p class="label">Malaysia / IT / Automation</p>
           <h1>
             <span>Yee</span>
-            builds practical systems from operational mess.
+            turns messy work into clear systems.
           </h1>
-          <p class="intro">
-            IT support, Python scripts, Salesforce property workflows, Make.com automation,
-            secure web tools, Machine Learning learning, and business logic built for real work.
-          </p>
-          <p class="learning-line">
-            I am still learning. I do not pretend to be expert in every field.
-            I ask, test, understand, and keep improving until the problem becomes clear.
-          </p>
-          <div class="launch-actions">
-            <a href="#skills">Open skill map</a>
-            <a href="mailto:zeusyee1247@gmail.com">Email me</a>
-          </div>
-        </div>
-
-        <div class="mission-orb" aria-label="Interactive profile signal">
-          <div class="orb-core">
-            <span>YEE</span>
-            <strong id="focus-label">IT Systems</strong>
-          </div>
-          <button type="button" data-focus="IT Systems">IT</button>
-          <button type="button" data-focus="Python Tools">Python</button>
-          <button type="button" data-focus="Salesforce Flow">SF</button>
-          <button type="button" data-focus="Make.com Automation">Make</button>
-          <button type="button" data-focus="Cyber Security">Security</button>
-          <button type="button" data-focus="Machine Learning">ML</button>
-        </div>
-      </section>
-
-      <section id="systems" class="panel rail-section">
-        <div class="section-copy">
-          <p class="kicker">How I think</p>
-          <h2>Mess enters. Logic leaves.</h2>
           <p>
-            I look at support problems like a system: trigger, owner, data,
-            rule, failure point, and next action.
+            I work with IT operations, Python, Salesforce workflows,
+            Make.com automation, secure web tools, and practical data thinking.
           </p>
+          <p class="honest">
+            I am still learning. I do not pretend to be expert in every field.
+            I ask clearly, test carefully, and keep improving until I understand the real problem.
+          </p>
+          <div class="poster-actions">
+            <a href="#skills">View skill map</a>
+            <a href="mailto:zeusyee1247@gmail.com">Email Yee</a>
+          </div>
         </div>
-        <div class="logic-rail" aria-label="Workflow logic">
+
+        <aside class="nameplate" aria-label="Profile quick view">
+          <div class="seal">技</div>
+          <p>Digital Resume</p>
+          <strong>Work style: practical, curious, system-minded.</strong>
+          <dl>
+            <div><dt>Stack</dt><dd>Python / Web / Salesforce / Make.com</dd></div>
+            <div><dt>Focus</dt><dd>Reduce manual work</dd></div>
+            <div><dt>Mode</dt><dd>Learning by building</dd></div>
+          </dl>
+        </aside>
+      </section>
+
+      <section id="method" class="method-section">
+        <div class="section-title">
+          <p class="label">How I solve</p>
+          <h2>像做流程图一样处理问题</h2>
+          <p>Every issue is broken into trigger, rule, owner, data, output, and risk.</p>
+        </div>
+        <div class="ticket-row" aria-label="Method steps">
           <article>
-            <span>Input</span>
-            <strong>Unclear request, manual task, repeated issue</strong>
+            <span>01</span>
+            <h3>Listen</h3>
+            <p>Understand the real pain before touching the tool.</p>
           </article>
           <article>
-            <span>Process</span>
-            <strong>Map the rule, test the data, reduce the steps</strong>
+            <span>02</span>
+            <h3>Map</h3>
+            <p>Turn messy steps into simple if/else logic.</p>
           </article>
           <article>
-            <span>Output</span>
-            <strong>Cleaner workflow, safer handover, useful tool</strong>
+            <span>03</span>
+            <h3>Build</h3>
+            <p>Create the page, script, flow, or automation.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Improve</h3>
+            <p>Test, explain, document, and make it easier to hand over.</p>
           </article>
         </div>
       </section>
 
-      <section id="skills" class="panel">
-        <div class="section-copy wide">
-          <p class="kicker">Skill map</p>
-          <h2>My current modules</h2>
+      <section id="skills" class="skills-section">
+        <div class="vertical-title" aria-hidden="true">能力清单</div>
+        <div class="section-title">
+          <p class="label">Current skill map</p>
+          <h2>Not just coding. Practical systems thinking.</h2>
         </div>
-        <div class="skill-grid" aria-label="Skill list">
-          <button type="button" data-skill="IT support, access control, troubleshooting, file workflows, and process improvement.">IT Operations</button>
-          <button type="button" data-skill="Landing pages, internal tools, frontend UI, backend logic, secure forms, and deployment.">Web Development</button>
-          <button type="button" data-skill="Automation scripts, file processing, data cleaning, report generation, and practical problem solving.">Python & Data</button>
-          <button type="button" data-skill="Lead, account, opportunity, booking, order, SPA signing, Flow, formulas, and dashboards.">Salesforce CRM</button>
-          <button type="button" data-skill="Social leads, webhooks, routing logic, CRM handoff, notifications, and business rules.">Make.com</button>
-          <button type="button" data-skill="Data protection, access risk, suspicious activity thinking, secure app habits, and awareness.">Cyber Security</button>
-          <button type="button" data-skill="ML concepts, Python experiments, model workflow, data preparation, and business-use framing.">Machine Learning</button>
-          <button type="button" data-skill="Decision trees, automation rules, if/else thinking, workflow mapping, and practical delivery.">Business Logic</button>
-          <button type="button" data-skill="Created a reusable Codex skill for Salesforce backup checks, archives, safety rules, and cleanup planning.">Codex Skill</button>
-          <button type="button" data-skill="Used Salesforce backup reports with Python for public-safe ML scoring, charts, and explanations.">Backup Analysis</button>
-          <button type="button" data-skill="Helped a customer install and configure OpenClaw on Windows, including setup guidance and troubleshooting.">OpenClaw Setup</button>
+        <div class="skill-board" aria-label="Skill buttons">
+          <button type="button" data-detail="User support, access control, troubleshooting, file workflows, and process improvement.">IT Operations</button>
+          <button type="button" data-detail="Landing pages, internal tools, frontend UI, backend logic, secure forms, and deployment.">Web Development</button>
+          <button type="button" data-detail="Automation scripts, file processing, data cleaning, report generation, and practical problem solving.">Python & Data</button>
+          <button type="button" data-detail="Lead, account, opportunity, booking, order, SPA signing, Flow, formulas, and dashboards.">Salesforce CRM</button>
+          <button type="button" data-detail="Social leads, webhooks, routing logic, CRM handoff, notifications, and business rules.">Make.com</button>
+          <button type="button" data-detail="Data protection, access risk, suspicious activity thinking, secure app habits, and awareness.">Cyber Security</button>
+          <button type="button" data-detail="Machine Learning concepts, Python experiments, model workflow, data preparation, and business-use framing.">Machine Learning</button>
+          <button type="button" data-detail="Decision trees, automation rules, workflow mapping, and practical delivery.">Business Logic</button>
+          <button type="button" data-detail="Created a reusable Codex skill for Salesforce backup checks, archives, safety rules, and cleanup planning.">Codex Skill</button>
+          <button type="button" data-detail="Used Salesforce backup reports with Python for public-safe ML scoring, charts, and explanations.">Backup Analysis</button>
+          <button type="button" data-detail="Helped a customer install and configure OpenClaw on Windows, including setup guidance and troubleshooting.">OpenClaw Setup</button>
         </div>
-        <output id="skill-output">Select any module to inspect what it means in practical work.</output>
+        <output id="skill-detail">Tap a skill to show the practical meaning.</output>
       </section>
 
-      <section id="proof" class="panel proof-section">
-        <div class="section-copy">
-          <p class="kicker">Recent proof</p>
-          <h2>Work I can show</h2>
+      <section id="proof" class="proof-section">
+        <div class="section-title">
+          <p class="label">Recent proof</p>
+          <h2>Small builds. Real output.</h2>
         </div>
-        <div class="proof-list">
+        <div class="case-stack">
           <article>
-            <small>01 / Custom Codex Skill</small>
-            <h3>sf-backup</h3>
-            <p>Reusable skill for Salesforce backup checks, archive planning, latest-version review, and safe cleanup logic.</p>
+            <small>Case 01</small>
+            <h3>sf-backup Codex Skill</h3>
+            <p>Built a reusable skill for Salesforce backup checks, archive review, and cleanup safety logic.</p>
           </article>
           <article>
-            <small>02 / Python + Machine Learning</small>
-            <h3>Bestari Jaya Risk Showcase</h3>
-            <p>Analysed April 2026 Salesforce backup reports and converted risk scoring into a public-safe story.</p>
+            <small>Case 02</small>
+            <h3>Bestari Jaya ML Risk Showcase</h3>
+            <p>Used Python with Salesforce backup reports to produce public-safe scoring and chart explanations.</p>
           </article>
           <article>
-            <small>03 / Customer Support</small>
-            <h3>OpenClaw on Windows</h3>
-            <p>Helped a customer install and configure OpenClaw on a Windows platform with practical troubleshooting.</p>
+            <small>Case 03</small>
+            <h3>OpenClaw Windows Setup</h3>
+            <p>Helped a customer install and configure OpenClaw on Windows with practical troubleshooting.</p>
           </article>
         </div>
       </section>
 
-      <section class="panel quote-books">
-        <article class="quote-block">
-          <p class="kicker">Daily quote</p>
+      <section class="learning-section">
+        <article>
+          <p class="label">Daily quote</p>
           <blockquote>
             <p id="daily-quote">Courage is built by continuing when the answer is not clear yet.</p>
             <cite id="daily-source">Churchill-inspired daily reflection</cite>
           </blockquote>
         </article>
-        <article class="book-signal">
-          <p class="kicker">Learning shelf</p>
+        <article>
+          <p class="label">Learning shelf</p>
           <h2>Books I am interested in</h2>
-          <div class="book-stream" aria-label="Books I am interested in">
+          <div class="book-marquee" aria-label="Books I am interested in">
             <span>The Secret</span>
             <span>Do Not Believe Everything You Think</span>
             <span>Read People Like a Book</span>
@@ -161,12 +170,15 @@
         </article>
       </section>
 
-      <section id="contact" class="contact-panel">
-        <p class="kicker">Contact channel</p>
-        <h2>Use this as my public digital resume.</h2>
+      <section id="contact" class="contact-section">
+        <div>
+          <p class="label">Contact</p>
+          <h2>把页面当成我的公开电子名片。</h2>
+          <p>For LinkedIn visitors, recruiters, collaborators, or anyone who wants to connect.</p>
+        </div>
         <div class="contact-actions">
-          <a href="https://www.linkedin.com/in/yeeyl/" target="_blank" rel="noreferrer">View LinkedIn</a>
-          <a href="mailto:zeusyee1247@gmail.com">Email Me</a>
+          <a href="https://www.linkedin.com/in/yeeyl/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="mailto:zeusyee1247@gmail.com">zeusyee1247@gmail.com</a>
         </div>
       </section>
     </main>
