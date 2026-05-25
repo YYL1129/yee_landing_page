@@ -5,234 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Yee's IT, automation, Salesforce, Python, machine learning, and cyber security digital resume."
+      content="Yee's interactive IT, automation, Python, Salesforce, machine learning, and cyber security digital resume."
     >
-    <title>Yee | Digital Systems Resume</title>
+    <title>Yee | Interactive IT Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     >
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div class="boot-screen" aria-hidden="true">
-      <div class="boot-shell">
-        <span>YEE_BENTO_OS</span>
-        <strong>Loading practical systems profile</strong>
-        <div class="boot-progress"><span></span></div>
-      </div>
-    </div>
+    <canvas id="neural-field" aria-hidden="true"></canvas>
+    <div class="scanlight" aria-hidden="true"></div>
 
-    <canvas id="starfield" aria-hidden="true"></canvas>
-    <div class="cursor-glow" aria-hidden="true"></div>
-
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Go to top">
-        <span class="brand-mark">Y</span>
-        <span>Yee</span>
+    <header class="topbar">
+      <a class="identity" href="#launch" aria-label="Go to top">
+        <span>Y</span>
+        <strong>Yee</strong>
       </a>
       <nav aria-label="Main navigation">
-        <a href="#work">Work</a>
+        <a href="#systems">Systems</a>
         <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
+        <a href="#proof">Proof</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Malaysia · IT systems · Automation · Secure workflows</p>
-          <h1>Turning messy work into usable digital systems.</h1>
-          <p class="hero-text">
-            I work across IT support, Python tools, Salesforce property workflows,
-            Make.com automation, secure web apps, and practical data systems.
-            <span>I am still learning, but I learn seriously, ask clearly, and focus on understanding the real problem.</span>
+    <main id="launch">
+      <section class="launch">
+        <div class="launch-copy">
+          <p class="kicker">Malaysia / IT / Automation / Secure workflows</p>
+          <h1>
+            <span>Yee</span>
+            builds practical systems from operational mess.
+          </h1>
+          <p class="intro">
+            IT support, Python scripts, Salesforce property workflows, Make.com automation,
+            secure web tools, Machine Learning learning, and business logic built for real work.
           </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#skills">Explore Skills</a>
-            <a class="button secondary" href="#contact">Contact Yee</a>
+          <p class="learning-line">
+            I am still learning. I do not pretend to be expert in every field.
+            I ask, test, understand, and keep improving until the problem becomes clear.
+          </p>
+          <div class="launch-actions">
+            <a href="#skills">Open skill map</a>
+            <a href="mailto:zeusyee1247@gmail.com">Email me</a>
           </div>
         </div>
 
-        <div class="hero-bento" aria-label="Digital profile dashboard">
-          <article class="bento-card command-card">
-            <div class="card-topline">
-              <span>profile.mode</span>
-              <span id="active-mode">builder</span>
-            </div>
-            <h2 id="mode-title">Business Workflow Builder</h2>
-            <p id="mode-summary">Builds practical tools, automation flows, and support systems for real business problems.</p>
-            <div class="mode-switcher" aria-label="Profile modes">
-              <button class="mode-chip active" type="button" data-mode="builder" aria-pressed="true">Builder</button>
-              <button class="mode-chip" type="button" data-mode="automation" aria-pressed="false">Automation</button>
-              <button class="mode-chip" type="button" data-mode="security" aria-pressed="false">Security</button>
-              <button class="mode-chip" type="button" data-mode="learning" aria-pressed="false">Learning</button>
-            </div>
-          </article>
-
-          <article class="bento-card stack-card">
-            <div class="card-topline">
-              <span>stack</span>
-              <span>live</span>
-            </div>
-            <div class="stack-list">
-              <span>Python</span>
-              <span>Salesforce</span>
-              <span>Make.com</span>
-              <span>Cyber Security</span>
-              <span>Machine Learning</span>
-              <span>Web Systems</span>
-            </div>
-          </article>
-
-          <article class="bento-card signal-card">
-            <span>11</span>
-            <p>skill modules connected into one practical profile.</p>
-          </article>
-
-          <article class="bento-card flow-card">
-            <div class="flow-row">
-              <span>mess</span>
-              <i></i>
-              <span>logic</span>
-              <i></i>
-              <span>system</span>
-            </div>
-            <p>Support work becomes repeatable workflows, clean handover, and safer operations.</p>
-          </article>
-
-          <article class="bento-card code-card">
-            <pre><code id="system-output">mission: reduce manual work
-stack: Python + web + Salesforce + Make.com
-signal: practical business systems online</code></pre>
-          </article>
+        <div class="mission-orb" aria-label="Interactive profile signal">
+          <div class="orb-core">
+            <span>YEE</span>
+            <strong id="focus-label">IT Systems</strong>
+          </div>
+          <button type="button" data-focus="IT Systems">IT</button>
+          <button type="button" data-focus="Python Tools">Python</button>
+          <button type="button" data-focus="Salesforce Flow">SF</button>
+          <button type="button" data-focus="Make.com Automation">Make</button>
+          <button type="button" data-focus="Cyber Security">Security</button>
+          <button type="button" data-focus="Machine Learning">ML</button>
         </div>
       </section>
 
-      <section id="work" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Operating lanes</p>
-          <h2>Where I create value</h2>
-        </div>
-        <div class="bento-grid work-grid">
-          <article class="bento-card large">
-            <span>01</span>
-            <h3>Stabilise IT Operations</h3>
-            <p>Fix user issues, access problems, file workflows, system gaps, and daily operational friction.</p>
-          </article>
-          <article class="bento-card">
-            <span>02</span>
-            <h3>Build Useful Web Tools</h3>
-            <p>Responsive tools for desktop and mobile, with clear actions and practical backend logic.</p>
-          </article>
-          <article class="bento-card">
-            <span>03</span>
-            <h3>Automate Business Flow</h3>
-            <p>Connect leads, records, dashboards, notifications, and repeatable rules.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="skills" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Skill bento</p>
-          <h2>One profile, multiple practical modules</h2>
-          <p class="section-intro">
-            My skills are not only coding. I connect support, automation logic, CRM workflows,
-            data handling, and security thinking into usable business solutions.
+      <section id="systems" class="panel rail-section">
+        <div class="section-copy">
+          <p class="kicker">How I think</p>
+          <h2>Mess enters. Logic leaves.</h2>
+          <p>
+            I look at support problems like a system: trigger, owner, data,
+            rule, failure point, and next action.
           </p>
         </div>
-        <div class="skill-matrix" aria-label="Skill groups">
-          <article class="bento-card"><span>01</span><h3>IT & Operations</h3><p>User support, access control, troubleshooting, file workflows, and process improvement.</p></article>
-          <article class="bento-card"><span>02</span><h3>Web Development</h3><p>Landing pages, internal tools, frontend UI, backend logic, secure forms, and deployment.</p></article>
-          <article class="bento-card"><span>03</span><h3>Python & Data</h3><p>Automation scripts, file processing, data cleaning, report generation, and problem solving.</p></article>
-          <article class="bento-card"><span>04</span><h3>Salesforce Property CRM</h3><p>Lead, account, opportunity, booking, order, SPA signing, Flow, formulas, and dashboards.</p></article>
-          <article class="bento-card"><span>05</span><h3>Make.com Automation</h3><p>Social leads, webhooks, routing logic, CRM handoff, notifications, and business rules.</p></article>
-          <article class="bento-card"><span>06</span><h3>Cyber Security</h3><p>Data protection, access risk, suspicious activity thinking, secure app habits, and awareness.</p></article>
-          <article class="bento-card"><span>07</span><h3>Machine Learning</h3><p>ML concepts, Python experiments, model workflow, data preparation, and business-use framing.</p></article>
-          <article class="bento-card"><span>08</span><h3>Business Logic</h3><p>Decision trees, automation rules, if/else thinking, workflow mapping, and practical delivery.</p></article>
-          <article class="bento-card"><span>09</span><h3>Custom Codex Skills</h3><p>Created a reusable Codex skill for Salesforce backup checks, archives, safety rules, and cleanup planning.</p></article>
-          <article class="bento-card"><span>10</span><h3>Salesforce Backup Analysis</h3><p>Used Salesforce backup reports with Python for public-safe ML scoring, charts, and explanations.</p></article>
-          <article class="bento-card"><span>11</span><h3>Windows Software Setup</h3><p>Helped a customer install and configure OpenClaw on Windows, including setup guidance and troubleshooting.</p></article>
+        <div class="logic-rail" aria-label="Workflow logic">
+          <article>
+            <span>Input</span>
+            <strong>Unclear request, manual task, repeated issue</strong>
+          </article>
+          <article>
+            <span>Process</span>
+            <strong>Map the rule, test the data, reduce the steps</strong>
+          </article>
+          <article>
+            <span>Output</span>
+            <strong>Cleaner workflow, safer handover, useful tool</strong>
+          </article>
         </div>
       </section>
 
-      <section id="projects" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Recent proof</p>
-          <h2>Built, tested, and documented</h2>
+      <section id="skills" class="panel">
+        <div class="section-copy wide">
+          <p class="kicker">Skill map</p>
+          <h2>My current modules</h2>
         </div>
-        <div class="project-grid">
-          <article class="bento-card project-card">
-            <p class="eyebrow">First custom Codex skill</p>
+        <div class="skill-grid" aria-label="Skill list">
+          <button type="button" data-skill="IT support, access control, troubleshooting, file workflows, and process improvement.">IT Operations</button>
+          <button type="button" data-skill="Landing pages, internal tools, frontend UI, backend logic, secure forms, and deployment.">Web Development</button>
+          <button type="button" data-skill="Automation scripts, file processing, data cleaning, report generation, and practical problem solving.">Python & Data</button>
+          <button type="button" data-skill="Lead, account, opportunity, booking, order, SPA signing, Flow, formulas, and dashboards.">Salesforce CRM</button>
+          <button type="button" data-skill="Social leads, webhooks, routing logic, CRM handoff, notifications, and business rules.">Make.com</button>
+          <button type="button" data-skill="Data protection, access risk, suspicious activity thinking, secure app habits, and awareness.">Cyber Security</button>
+          <button type="button" data-skill="ML concepts, Python experiments, model workflow, data preparation, and business-use framing.">Machine Learning</button>
+          <button type="button" data-skill="Decision trees, automation rules, if/else thinking, workflow mapping, and practical delivery.">Business Logic</button>
+          <button type="button" data-skill="Created a reusable Codex skill for Salesforce backup checks, archives, safety rules, and cleanup planning.">Codex Skill</button>
+          <button type="button" data-skill="Used Salesforce backup reports with Python for public-safe ML scoring, charts, and explanations.">Backup Analysis</button>
+          <button type="button" data-skill="Helped a customer install and configure OpenClaw on Windows, including setup guidance and troubleshooting.">OpenClaw Setup</button>
+        </div>
+        <output id="skill-output">Select any module to inspect what it means in practical work.</output>
+      </section>
+
+      <section id="proof" class="panel proof-section">
+        <div class="section-copy">
+          <p class="kicker">Recent proof</p>
+          <h2>Work I can show</h2>
+        </div>
+        <div class="proof-list">
+          <article>
+            <small>01 / Custom Codex Skill</small>
             <h3>sf-backup</h3>
-            <p>Personal Codex skill for safely managing the <code>YYL1129/sf-backup</code> Salesforce backup repository.</p>
-            <div class="tag-row">
-              <span>Salesforce Backup</span>
-              <span>GitHub Safety</span>
-              <span>Cleanup Planning</span>
-            </div>
+            <p>Reusable skill for Salesforce backup checks, archive planning, latest-version review, and safe cleanup logic.</p>
           </article>
-          <article class="bento-card project-card featured">
-            <p class="eyebrow">Recent Codex build</p>
-            <h3>Bestari Jaya ML Risk Showcase</h3>
-            <p>Analysed April 2026 Salesforce backup reports with Python to score slow-selling property-unit risk.</p>
-            <div class="tag-row">
-              <span>840 Units Scored</span>
-              <span>Public-Safe Data</span>
-              <span>Charts</span>
-            </div>
+          <article>
+            <small>02 / Python + Machine Learning</small>
+            <h3>Bestari Jaya Risk Showcase</h3>
+            <p>Analysed April 2026 Salesforce backup reports and converted risk scoring into a public-safe story.</p>
           </article>
-          <article class="bento-card project-card">
-            <p class="eyebrow">Customer support</p>
-            <h3>OpenClaw Windows Installation</h3>
-            <p>Helped a customer set up OpenClaw on Windows, with environment checks and basic troubleshooting.</p>
-            <div class="tag-row">
-              <span>Windows</span>
-              <span>Software Setup</span>
-              <span>Support</span>
-            </div>
+          <article>
+            <small>03 / Customer Support</small>
+            <h3>OpenClaw on Windows</h3>
+            <p>Helped a customer install and configure OpenClaw on a Windows platform with practical troubleshooting.</p>
           </article>
         </div>
       </section>
 
-      <section class="section quote-section" aria-label="Daily quote">
-        <div class="bento-card quote-card">
-          <p class="eyebrow">Daily quote</p>
+      <section class="panel quote-books">
+        <article class="quote-block">
+          <p class="kicker">Daily quote</p>
           <blockquote>
             <p id="daily-quote">Courage is built by continuing when the answer is not clear yet.</p>
-            <cite id="daily-quote-source">Churchill-inspired daily reflection</cite>
+            <cite id="daily-source">Churchill-inspired daily reflection</cite>
           </blockquote>
-        </div>
-      </section>
-
-      <section id="books" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Learning shelf</p>
+        </article>
+        <article class="book-signal">
+          <p class="kicker">Learning shelf</p>
           <h2>Books I am interested in</h2>
-        </div>
-        <div class="book-grid" aria-label="Books I am interested in">
-          <article class="book-card"><span>mindset</span><strong>The Secret</strong><small>focus + belief engine</small></article>
-          <article class="book-card"><span>thinking</span><strong>Do Not Believe Everything You Think</strong><small>mental noise filter</small></article>
-          <article class="book-card"><span>people</span><strong>Read People Like a Book</strong><small>behaviour signals</small></article>
-          <article class="book-card"><span>leadership</span><strong>Leadership Smarts</strong><small>decision systems</small></article>
-          <article class="book-card"><span>energy</span><strong>The Power</strong><small>action loop</small></article>
-          <article class="book-card"><span>time</span><strong>我對時間有耐心</strong><small>patience protocol</small></article>
-        </div>
+          <div class="book-stream" aria-label="Books I am interested in">
+            <span>The Secret</span>
+            <span>Do Not Believe Everything You Think</span>
+            <span>Read People Like a Book</span>
+            <span>Leadership Smarts</span>
+            <span>The Power</span>
+            <span>我對時間有耐心</span>
+          </div>
+        </article>
       </section>
 
-      <section id="contact" class="section contact-section">
-        <div>
-          <p class="eyebrow">Contact</p>
-          <h2>For LinkedIn visitors, recruiters, collaborators, and people who want to connect.</h2>
-          <p>Use this page as my public digital resume. The next action is simple: view LinkedIn or email me directly.</p>
-        </div>
+      <section id="contact" class="contact-panel">
+        <p class="kicker">Contact channel</p>
+        <h2>Use this as my public digital resume.</h2>
         <div class="contact-actions">
-          <a class="button primary" href="https://www.linkedin.com/in/yeeyl/" target="_blank" rel="noreferrer">View LinkedIn</a>
-          <a class="button secondary" href="mailto:zeusyee1247@gmail.com">Email Me</a>
+          <a href="https://www.linkedin.com/in/yeeyl/" target="_blank" rel="noreferrer">View LinkedIn</a>
+          <a href="mailto:zeusyee1247@gmail.com">Email Me</a>
         </div>
       </section>
     </main>
