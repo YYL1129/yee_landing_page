@@ -17,6 +17,22 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <div class="boot-screen" aria-hidden="true">
+      <div class="boot-shell">
+        <div class="boot-topline">
+          <span>YEE_AI_OS</span>
+          <span id="boot-percent">0%</span>
+        </div>
+        <div class="boot-title">Initialising digital profile</div>
+        <div class="boot-grid">
+          <span>systems</span>
+          <span>automation</span>
+          <span>security</span>
+          <span>learning</span>
+        </div>
+        <div class="boot-progress"><span></span></div>
+      </div>
+    </div>
     <canvas id="starfield" aria-hidden="true"></canvas>
     <canvas id="tech-orbit-3d" aria-hidden="true"></canvas>
 
@@ -35,9 +51,13 @@
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Malaysia · IT systems · Automation · Secure apps</p>
-          <h1>Yee</h1>
-          <p class="hero-role">I debug chaos into secure, automated systems.</p>
+          <p class="eyebrow">Malaysia · AI-ready IT systems · Automation · Secure apps</p>
+          <h1 class="glitch-title">
+            <span>Yee</span>
+            <span class="glitch-layer glitch-layer-cyan" aria-hidden="true">Yee</span>
+            <span class="glitch-layer glitch-layer-pink" aria-hidden="true">Yee</span>
+          </h1>
+          <p class="hero-role">I turn messy workflows into intelligent digital systems.</p>
           <p class="hero-text">
             IT support, Python tools, Salesforce property workflows, Make.com automation,
             secure web apps, and practical data systems built for real operations.
@@ -52,9 +72,18 @@
             <span>Automation</span>
             <span>Cyber Security</span>
           </div>
+          <div class="hero-actions" aria-label="Profile actions">
+            <a class="button primary" href="#skills">Explore Systems</a>
+            <a class="button secondary" href="#contact">Connect</a>
+          </div>
         </div>
 
         <div class="command-centre" aria-label="Profile command centre">
+          <div class="ai-orb" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <div class="radar">
             <div class="radar-sweep"></div>
             <span class="node node-a">CRM</span>
@@ -69,11 +98,23 @@
             <span></span>
             <span></span>
           </div>
-          <div class="terminal-line"><span>$</span> whoami</div>
-            <p>IT expert, software developer, automation builder, Machine Learning learner, and cyber security problem solver.</p>
-            <pre><code>mission: reduce manual work
+          <div class="terminal-line"><span>$</span> activate_profile --mode <strong id="active-mode">builder</strong></div>
+            <p id="mode-summary">Building practical tools, automation flows, and support systems for real business problems.</p>
+            <div class="mode-switcher" aria-label="Profile modes">
+              <button class="mode-chip active" type="button" data-mode="builder" aria-pressed="true">Builder</button>
+              <button class="mode-chip" type="button" data-mode="automation" aria-pressed="false">Automation</button>
+              <button class="mode-chip" type="button" data-mode="security" aria-pressed="false">Security</button>
+              <button class="mode-chip" type="button" data-mode="learning" aria-pressed="false">Learning</button>
+            </div>
+            <pre><code id="system-output">mission: reduce manual work
 stack: Python + web + Salesforce + Make.com
-approach: business first</code></pre>
+signal: practical business systems online</code></pre>
+            <div class="data-stream" aria-hidden="true">
+              <span>routing leads</span>
+              <span>scanning risk</span>
+              <span>cleaning data</span>
+              <span>building UI</span>
+            </div>
           </div>
         </div>
       </section>
