@@ -42,8 +42,9 @@ function resizeCanvas() {
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
     radius: Math.random() * 1.7 + 0.3,
-    speed: Math.random() * 0.35 + 0.08,
-    alpha: Math.random() * 0.6 + 0.25
+    vx: (Math.random() - 0.5) * 0.18,
+    vy: (Math.random() - 0.5) * 0.18,
+    alpha: Math.random() * 0.45 + 0.18
   }));
 
   links = Array.from({ length: Math.max(12, Math.floor(count / 6)) }, () => ({
@@ -58,19 +59,36 @@ function draw() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   for (const star of stars) {
-    star.y += star.speed;
-    if (star.y > window.innerHeight + 6) {
-      star.y = -6;
-      star.x = Math.random() * window.innerWidth;
-    }
+    star.x += star.vx;
+    star.y += star.vy;
+
+    if (star.x < -6 || star.x > window.innerWidth + 6) star.vx *= -1;
+    if (star.y < -6 || star.y > window.innerHeight + 6) star.vy *= -1;
 
     const driftX = (pointer.x - window.innerWidth / 2) * 0.006;
     const driftY = (pointer.y - window.innerHeight / 2) * 0.006;
 
     ctx.beginPath();
     ctx.arc(star.x + driftX, star.y + driftY, star.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+    ctx.fillStyle = `rgba(215, 255, 63, ${star.alpha})`;
     ctx.fill();
+  }
+
+  for (let index = 0; index < stars.length; index += 1) {
+    for (let next = index + 1; next < stars.length; next += 1) {
+      const a = stars[index];
+      const b = stars[next];
+      const distance = Math.hypot(a.x - b.x, a.y - b.y);
+
+      if (distance < 96) {
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(215, 255, 63, ${0.1 - distance / 1200})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
   }
 
   for (const point of links) {
@@ -82,7 +100,7 @@ function draw() {
 
     ctx.beginPath();
     ctx.arc(point.x, point.y, 1.8, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(105, 231, 255, 0.55)";
+    ctx.fillStyle = "rgba(88, 240, 255, 0.52)";
     ctx.fill();
   }
 
@@ -96,7 +114,7 @@ function draw() {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(105, 231, 255, ${0.18 - distance / 900})`;
+        ctx.strokeStyle = `rgba(88, 240, 255, ${0.18 - distance / 900})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -110,6 +128,10 @@ window.addEventListener("resize", resizeCanvas);
 window.addEventListener("pointermove", (event) => {
   pointer.x = event.clientX;
   pointer.y = event.clientY;
+  document.documentElement.style.setProperty("--cursor-x", `${event.clientX}px`);
+  document.documentElement.style.setProperty("--cursor-y", `${event.clientY}px`);
+  document.documentElement.style.setProperty("--spot-x", `${(event.clientX / window.innerWidth) * 100}%`);
+  document.documentElement.style.setProperty("--spot-y", `${(event.clientY / window.innerHeight) * 100}%`);
 });
 
 function setDailyQuote() {

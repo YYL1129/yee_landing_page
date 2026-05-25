@@ -22,18 +22,18 @@ if (canvas) {
   scene.add(group);
 
   const core = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.35, 1),
+    new THREE.IcosahedronGeometry(1.15, 2),
     new THREE.MeshBasicMaterial({
       color: accent,
       wireframe: true,
       transparent: true,
-      opacity: 0.32
+      opacity: 0.28
     })
   );
   group.add(core);
 
   const innerCore = new THREE.Mesh(
-    new THREE.OctahedronGeometry(0.72, 0),
+    new THREE.BoxGeometry(0.9, 0.9, 0.9, 2, 2, 2),
     new THREE.MeshBasicMaterial({
       color: green,
       wireframe: true,
@@ -43,21 +43,21 @@ if (canvas) {
   );
   group.add(innerCore);
 
-  const orbitMaterials = [
+  const frameMaterials = [
     new THREE.MeshBasicMaterial({ color: accent, transparent: true, opacity: 0.24, wireframe: true }),
     new THREE.MeshBasicMaterial({ color: green, transparent: true, opacity: 0.22, wireframe: true }),
     new THREE.MeshBasicMaterial({ color: amber, transparent: true, opacity: 0.18, wireframe: true })
   ];
 
-  const orbits = [2.05, 2.78, 3.42].map((radius, index) => {
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(radius, 0.008, 8, 120),
-      orbitMaterials[index]
+  const frames = [2.4, 3.15, 3.85].map((size, index) => {
+    const frame = new THREE.Mesh(
+      new THREE.BoxGeometry(size, size * 0.62, size * 0.2, 1, 1, 1),
+      frameMaterials[index]
     );
-    ring.rotation.x = index * 0.78 + 0.62;
-    ring.rotation.y = index * 0.38 + 0.18;
-    group.add(ring);
-    return ring;
+    frame.rotation.x = index * 0.42 + 0.16;
+    frame.rotation.y = index * 0.36 + 0.24;
+    group.add(frame);
+    return frame;
   });
 
   const nodeMaterial = new THREE.MeshBasicMaterial({
@@ -68,13 +68,14 @@ if (canvas) {
 
   const nodes = Array.from({ length: 18 }, (_, index) => {
     const node = new THREE.Mesh(new THREE.SphereGeometry(index % 3 === 0 ? 0.055 : 0.035, 14, 14), nodeMaterial);
-    const angle = (index / 18) * Math.PI * 2;
-    const radius = 2.2 + (index % 4) * 0.34;
+    const column = index % 6;
+    const row = Math.floor(index / 6);
     node.userData = {
-      angle,
-      radius,
+      baseX: (column - 2.5) * 0.72,
+      baseY: (row - 1) * 0.72,
+      baseZ: ((index % 4) - 1.5) * 0.42,
       speed: 0.16 + (index % 5) * 0.018,
-      tilt: (index % 6) * 0.18
+      phase: (index / 18) * Math.PI * 2
     };
     group.add(node);
     return node;
@@ -124,18 +125,17 @@ if (canvas) {
     innerCore.rotation.x = -elapsed * 0.28 * speed;
     innerCore.rotation.z = elapsed * 0.34 * speed;
 
-    orbits.forEach((ring, index) => {
-      ring.rotation.z = elapsed * (0.08 + index * 0.028) * speed;
-      ring.rotation.x += 0.0008 * (index + 1) * speed;
+    frames.forEach((frame, index) => {
+      frame.rotation.z = Math.sin(elapsed * 0.24 + index) * 0.25;
+      frame.rotation.x += 0.0007 * (index + 1) * speed;
+      frame.rotation.y += 0.0009 * (index + 1) * speed;
     });
 
     nodes.forEach((node) => {
-      const angle = node.userData.angle + elapsed * node.userData.speed * speed;
-      const radius = node.userData.radius;
       node.position.set(
-        Math.cos(angle) * radius,
-        Math.sin(angle + node.userData.tilt) * 0.82,
-        Math.sin(angle) * radius * 0.42
+        node.userData.baseX + Math.sin(elapsed * node.userData.speed + node.userData.phase) * 0.14,
+        node.userData.baseY + Math.cos(elapsed * node.userData.speed + node.userData.phase) * 0.14,
+        node.userData.baseZ + Math.sin(elapsed * 0.22 + node.userData.phase) * 0.42
       );
     });
 
