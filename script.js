@@ -15,9 +15,22 @@ const signals = {
 
 let audioContext;
 let gainNode;
-let oscillatorA;
-let oscillatorB;
+let pianoTimer;
+let melodyIndex = 0;
 let isPlaying = false;
+
+const venicePiano = [
+  { note: 392, time: 0, length: 0.72 },
+  { note: 493.88, time: 0.78, length: 0.52 },
+  { note: 587.33, time: 1.28, length: 0.86 },
+  { note: 523.25, time: 2.1, length: 0.58 },
+  { note: 440, time: 2.72, length: 0.82 },
+  { note: 349.23, time: 3.62, length: 0.62 },
+  { note: 392, time: 4.2, length: 1.1 },
+  { note: 329.63, time: 5.42, length: 0.82 }
+];
+
+const bassNotes = [196, 220, 174.61, 196];
 
 function initCursor() {
   window.addEventListener("pointermove", (event) => {
@@ -31,20 +44,8 @@ function initAudio() {
     if (!audioContext) {
       audioContext = new AudioContext();
       gainNode = audioContext.createGain();
-      oscillatorA = audioContext.createOscillator();
-      oscillatorB = audioContext.createOscillator();
-
-      oscillatorA.type = "sine";
-      oscillatorB.type = "triangle";
-      oscillatorA.frequency.value = 74;
-      oscillatorB.frequency.value = 111;
-
       gainNode.gain.value = 0;
-      oscillatorA.connect(gainNode);
-      oscillatorB.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      oscillatorA.start();
-      oscillatorB.start();
     }
 
     if (audioContext.state === "suspended") {
@@ -54,8 +55,63 @@ function initAudio() {
     isPlaying = !isPlaying;
     playToggle.classList.toggle("is-playing", isPlaying);
     record.classList.toggle("is-paused", !isPlaying);
-    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.035 : 0, audioContext.currentTime + 0.22);
+    gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.28 : 0, audioContext.currentTime + 0.28);
+
+    if (isPlaying) {
+      startPianoLoop();
+    } else {
+      window.clearInterval(pianoTimer);
+    }
   });
+}
+
+function playPianoNote(frequency, startTime, duration, level = 0.22) {
+  const noteGain = audioContext.createGain();
+  const tone = audioContext.createOscillator();
+  const shimmer = audioContext.createOscillator();
+  const filter = audioContext.createBiquadFilter();
+
+  tone.type = "triangle";
+  shimmer.type = "sine";
+  tone.frequency.value = frequency;
+  shimmer.frequency.value = frequency * 2.01;
+  filter.type = "lowpass";
+  filter.frequency.value = 2400;
+
+  noteGain.gain.setValueAtTime(0.0001, startTime);
+  noteGain.gain.exponentialRampToValueAtTime(level, startTime + 0.025);
+  noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+  tone.connect(filter);
+  shimmer.connect(filter);
+  filter.connect(noteGain);
+  noteGain.connect(gainNode);
+
+  tone.start(startTime);
+  shimmer.start(startTime);
+  tone.stop(startTime + duration + 0.08);
+  shimmer.stop(startTime + duration + 0.08);
+}
+
+function schedulePianoBar() {
+  const now = audioContext.currentTime + 0.04;
+  const bass = bassNotes[melodyIndex % bassNotes.length];
+
+  playPianoNote(bass, now, 1.8, 0.12);
+  playPianoNote(bass * 1.5, now + 0.04, 1.4, 0.08);
+
+  venicePiano.forEach((item) => {
+    playPianoNote(item.note, now + item.time, item.length, 0.18);
+  });
+
+  melodyIndex += 1;
+}
+
+function startPianoLoop() {
+  window.clearInterval(pianoTimer);
+  schedulePianoBar();
+  pianoTimer = window.setInterval(schedulePianoBar, 6400);
 }
 
 function initSignals() {
