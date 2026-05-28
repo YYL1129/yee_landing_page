@@ -253,10 +253,10 @@ function initThreeHero() {
   if (!threeStage || !window.THREE) return;
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x05070b, 0.08);
+  scene.fog = new THREE.FogExp2(0x06101f, 0.055);
 
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-  camera.position.set(0, 0.4, 9);
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+  camera.position.set(0, 1.35, 8.6);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
@@ -267,142 +267,169 @@ function initThreeHero() {
   threeStage.classList.add("is-ready");
 
   const softBlue = new THREE.Color("#8fd8ff");
-  const cream = new THREE.Color("#f5f0e8");
-  const dark = new THREE.Color("#111922");
 
-  scene.add(new THREE.AmbientLight(0x8fd8ff, 0.78));
+  scene.add(new THREE.AmbientLight(0x8fd8ff, 0.62));
 
-  const keyLight = new THREE.SpotLight(0x8fd8ff, 10.5, 24, Math.PI / 3.2, 0.72, 1.2);
-  keyLight.position.set(-4.8, 4.2, 5.8);
+  const keyLight = new THREE.SpotLight(0x8fd8ff, 8.2, 26, Math.PI / 3, 0.78, 1.1);
+  keyLight.position.set(-4.8, 5.2, 4.8);
   keyLight.castShadow = true;
   scene.add(keyLight);
 
-  const rimLight = new THREE.PointLight(0xf5f0e8, 6.2, 16);
-  rimLight.position.set(4.4, 1.7, 3.8);
+  const rimLight = new THREE.PointLight(0x3d7dff, 5.4, 18);
+  rimLight.position.set(4.6, 1.8, 2.8);
   scene.add(rimLight);
 
-  const frontLight = new THREE.PointLight(0x8fd8ff, 5.2, 12);
-  frontLight.position.set(0.8, -0.5, 5.5);
-  scene.add(frontLight);
+  const horizonLight = new THREE.PointLight(0x8fd8ff, 6.8, 22);
+  horizonLight.position.set(0, 0.3, -4.8);
+  scene.add(horizonLight);
 
-  const room = new THREE.Group();
-  const wallMaterial = new THREE.MeshStandardMaterial({
-    color: 0x0b1017,
-    roughness: 0.82,
-    metalness: 0.08,
-    transparent: true,
-    opacity: 0.92
-  });
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(16, 9), wallMaterial);
-  floor.rotation.x = -Math.PI / 2;
-  floor.position.set(0, -2.1, -0.6);
-  floor.receiveShadow = true;
-  room.add(floor);
+  const world = new THREE.Group();
+  world.position.set(1.15, 0.78, 0.2);
+  world.rotation.set(-0.03, -0.12, 0.02);
+  world.scale.setScalar(1.08);
+  scene.add(world);
 
-  const backWall = new THREE.Mesh(new THREE.PlaneGeometry(16, 8), wallMaterial);
-  backWall.position.set(0, 1, -4.1);
-  backWall.receiveShadow = true;
-  room.add(backWall);
-
-  const windowBars = new THREE.Group();
-  const barMaterial = new THREE.MeshStandardMaterial({ color: 0xdde5ea, roughness: 0.45, metalness: 0.1, transparent: true, opacity: 0.22 });
-  for (let index = 0; index < 5; index += 1) {
-    const bar = new THREE.Mesh(new THREE.BoxGeometry(0.045, 4.1, 0.04), barMaterial);
-    bar.position.set(-6 + index * 0.58, 0.8, -3.95);
-    windowBars.add(bar);
+  const terrainGeometry = new THREE.PlaneGeometry(18, 10, 120, 48);
+  const position = terrainGeometry.attributes.position;
+  for (let index = 0; index < position.count; index += 1) {
+    const x = position.getX(index);
+    const y = position.getY(index);
+    const wave = Math.sin(x * 0.9 + y * 0.55) * 0.18 + Math.cos(x * 0.38) * 0.12;
+    position.setZ(index, wave);
   }
-  room.add(windowBars);
-  scene.add(room);
+  position.needsUpdate = true;
+  terrainGeometry.computeVertexNormals();
 
-  const figure = new THREE.Group();
-  const suit = new THREE.MeshStandardMaterial({ color: 0x314559, roughness: 0.48, metalness: 0.2 });
-  const highlight = new THREE.MeshStandardMaterial({ color: 0x7c95a8, roughness: 0.45, metalness: 0.22 });
-
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.38, 32, 32), highlight);
-  head.position.set(0, 0.96, 0);
-  head.castShadow = true;
-  figure.add(head);
-
-  const bodyGeometry = THREE.CapsuleGeometry
-    ? new THREE.CapsuleGeometry(0.44, 0.86, 8, 20)
-    : new THREE.CylinderGeometry(0.44, 0.54, 1.5, 24);
-  const body = new THREE.Mesh(bodyGeometry, suit);
-  body.position.set(0, 0.05, 0);
-  body.rotation.z = -0.18;
-  body.castShadow = true;
-  figure.add(body);
-
-  const limbGeometry = THREE.CapsuleGeometry
-    ? new THREE.CapsuleGeometry(0.12, 0.82, 8, 18)
-    : new THREE.CylinderGeometry(0.12, 0.12, 1.05, 18);
-  [
-    [-0.62, 0.2, 0.05, 0.9, 0.1, -0.76],
-    [0.68, 0.15, 0.02, 1.05, 0.1, 0.82],
-    [-0.32, -0.78, 0.03, 0.85, 0.1, 0.52],
-    [0.5, -0.78, 0.02, 0.86, 0.1, -0.68]
-  ].forEach(([x, y, z, sx, sy, rz]) => {
-    const limb = new THREE.Mesh(limbGeometry, suit);
-    limb.position.set(x, y, z);
-    limb.scale.set(sx, 1, sy);
-    limb.rotation.z = rz;
-    limb.castShadow = true;
-    figure.add(limb);
-  });
-
-  figure.position.set(1.15, 0.62, 0.8);
-  figure.rotation.set(-0.08, -0.32, -0.35);
-  figure.scale.setScalar(1.58);
-  scene.add(figure);
-
-  const panelMaterial = new THREE.MeshStandardMaterial({
-    map: makePanelTexture(5),
-    color: cream,
-    roughness: 0.25,
-    metalness: 0.16,
-    emissive: softBlue,
-    emissiveIntensity: 0.78,
+  const terrainMaterial = new THREE.MeshStandardMaterial({
+    color: 0x07101d,
+    roughness: 0.9,
+    metalness: 0.1,
     transparent: true,
-    opacity: 0.92
+    opacity: 0.96
   });
+  const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
+  terrain.rotation.x = -Math.PI / 2;
+  terrain.position.set(0, -1.58, -0.8);
+  terrain.receiveShadow = true;
+  world.add(terrain);
 
-  const panels = new THREE.Group();
-  [
-    [-1.2, 1.0, 0.15, -0.18, -0.35, 0.04, 1.35],
-    [3.2, 0.25, -0.5, 0.1, 0.42, -0.05, 0.92],
-    [-3.55, 0.12, 0.45, 0.12, -0.22, 0.12, 0.82]
-  ].forEach(([x, y, z, rx, ry, rz, scale]) => {
-    const panel = new THREE.Mesh(new THREE.BoxGeometry(1.85, 0.82, 0.06), panelMaterial);
-    panel.position.set(x, y, z);
-    panel.rotation.set(rx, ry, rz);
-    panel.scale.setScalar(scale);
-    panel.castShadow = true;
-    panels.add(panel);
-  });
-  scene.add(panels);
+  const grid = new THREE.GridHelper(18, 38, 0x8fd8ff, 0x24506e);
+  grid.position.set(0, -1.31, -0.8);
+  grid.material.transparent = true;
+  grid.material.opacity = 0.52;
+  grid.material.depthWrite = false;
+  world.add(grid);
 
-  const orbitMaterial = new THREE.MeshBasicMaterial({
+  const hubMaterial = new THREE.MeshBasicMaterial({
     color: 0x8fd8ff,
     transparent: true,
-    opacity: 0.24
+    opacity: 0.82,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
   });
-  const orbit = new THREE.Mesh(new THREE.TorusGeometry(3.7, 0.01, 16, 180), orbitMaterial);
-  orbit.position.set(0.4, 0.1, -0.6);
-  orbit.rotation.set(1.16, 0.08, -0.28);
-  scene.add(orbit);
+  const hub = new THREE.Mesh(new THREE.IcosahedronGeometry(0.34, 2), hubMaterial);
+  hub.position.set(-1.1, -0.72, 0.45);
+  world.add(hub);
 
-  const objectMaterial = new THREE.MeshStandardMaterial({ color: 0x8fd8ff, roughness: 0.5, metalness: 0.28, transparent: true, opacity: 0.38 });
-  const objects = new THREE.Group();
-  [
-    new THREE.IcosahedronGeometry(0.38, 0),
-    new THREE.BoxGeometry(0.75, 0.22, 0.06),
-    new THREE.TorusGeometry(0.32, 0.025, 12, 48)
-  ].forEach((geometry, index) => {
-    const mesh = new THREE.Mesh(geometry, objectMaterial);
-    mesh.position.set(-3 + index * 3.2, 1.6 - index * 0.7, -0.35 - index * 0.5);
-    mesh.rotation.set(index * 0.5, index * -0.4, index * 0.3);
-    objects.add(mesh);
+  const trailGroup = new THREE.Group();
+  const trailMaterials = [];
+  const makeTrail = (offset, width, opacity, color = 0x8fd8ff) => {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-8.2, -1.34, 3.9 + offset),
+      new THREE.Vector3(-4.6, -1.08, 1.1 + offset * 0.35),
+      new THREE.Vector3(-1.4, -0.9, -0.4),
+      new THREE.Vector3(2.4, -1.05, -1.0 - offset * 0.22),
+      new THREE.Vector3(7.8, -1.22, -2.6 - offset)
+    ]);
+    const material = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 96, width * 1.8, 8, false), material);
+    trailMaterials.push(material);
+    trailGroup.add(mesh);
+  };
+
+  [-0.44, -0.26, -0.08, 0.12, 0.32, 0.54].forEach((offset, index) => {
+    makeTrail(offset, index === 2 ? 0.028 : 0.014, index === 2 ? 0.98 : 0.48);
   });
-  scene.add(objects);
+  makeTrail(-1.15, 0.016, 0.5, 0x3d7dff);
+  makeTrail(1.08, 0.016, 0.42, 0x6be7ff);
+  world.add(trailGroup);
+
+  const cubeGroup = new THREE.Group();
+  const cubeMaterial = new THREE.MeshStandardMaterial({
+    color: 0x2a78ff,
+    emissive: softBlue,
+    emissiveIntensity: 0.55,
+    roughness: 0.22,
+    metalness: 0.08,
+    transparent: true,
+    opacity: 0.72
+  });
+  const edgeMaterial = new THREE.LineBasicMaterial({
+    color: 0x8fd8ff,
+    transparent: true,
+    opacity: 0.82
+  });
+  [
+    [-2.8, 0.1, -1.8, 1.45],
+    [0.55, -0.34, -1.0, 0.62],
+    [3.2, -0.02, -2.05, 1.08],
+    [-4.9, -0.62, 0.4, 0.34]
+  ].forEach(([x, y, z, scale], index) => {
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), cubeMaterial);
+    cube.position.set(x, y, z);
+    cube.scale.setScalar(scale);
+    cube.rotation.set(0.18 * index, 0.28 * index, 0.08 * index);
+    cube.castShadow = true;
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(cube.geometry), edgeMaterial);
+    cube.add(edges);
+    cubeGroup.add(cube);
+  });
+  world.add(cubeGroup);
+
+  const pulseMaterial = new THREE.MeshBasicMaterial({
+    color: 0x8fd8ff,
+    transparent: true,
+    opacity: 0.18,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const pulse = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.012, 16, 180), pulseMaterial);
+  pulse.position.set(-0.8, -1.05, 0.5);
+  pulse.rotation.set(1.32, 0, -0.18);
+  world.add(pulse);
+
+  const towerMaterial = new THREE.MeshBasicMaterial({
+    color: 0x8fd8ff,
+    transparent: true,
+    opacity: 0.2,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const towerEdges = new THREE.LineBasicMaterial({
+    color: 0x8fd8ff,
+    transparent: true,
+    opacity: 0.66
+  });
+  const towers = new THREE.Group();
+  [
+    [-5.6, -0.8, 0.7, 1.4],
+    [-3.7, -0.82, -0.6, 0.95],
+    [2.7, -0.92, -1.4, 1.7],
+    [5.1, -0.9, -2.4, 1.15]
+  ].forEach(([x, y, z, height]) => {
+    const tower = new THREE.Mesh(new THREE.BoxGeometry(0.58, height, 0.58), towerMaterial);
+    tower.position.set(x, y + height / 2, z);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(tower.geometry), towerEdges);
+    tower.add(edges);
+    towers.add(tower);
+  });
+  world.add(towers);
 
   const clock = new THREE.Clock();
   let pointerX = 0;
@@ -426,27 +453,35 @@ function initThreeHero() {
 
   const animate = () => {
     const t = clock.getElapsedTime();
-    figure.position.x = 1.15 + Math.sin(t * 0.52) * 0.18;
-    figure.position.y = 0.62 + Math.sin(t * 0.85) * 0.42;
-    figure.rotation.z = -0.34 + Math.sin(t * 0.62) * 0.16;
-    figure.rotation.y = -0.24 + Math.sin(t * 0.58) * 0.18;
 
-    panels.children.forEach((panel, index) => {
-      panel.position.y += Math.sin(t * 1.2 + index) * 0.0042;
-      panel.rotation.z += Math.sin(t * 0.9 + index) * 0.0022;
+    trailMaterials.forEach((material, index) => {
+      material.opacity = 0.28 + Math.sin(t * 1.8 + index * 0.7) * 0.16 + (index === 2 ? 0.48 : 0);
     });
 
-    objects.children.forEach((object, index) => {
-      object.rotation.x += 0.004 + index * 0.001;
-      object.rotation.y += 0.006 + index * 0.001;
-      object.position.y += Math.sin(t * 1.4 + index) * 0.004;
+    cubeGroup.children.forEach((cube, index) => {
+      cube.rotation.x += 0.002 + index * 0.0008;
+      cube.rotation.y += 0.004 + index * 0.0006;
+      cube.position.y += Math.sin(t * 0.9 + index) * 0.0035;
+      cube.material.emissiveIntensity = 0.42 + Math.sin(t * 1.2 + index) * 0.18;
     });
 
-    orbit.rotation.z += 0.002;
+    hub.rotation.x += 0.008;
+    hub.rotation.y += 0.012;
+    hub.scale.setScalar(1 + Math.sin(t * 2.4) * 0.12);
+    towers.children.forEach((tower, index) => {
+      tower.position.y += Math.sin(t * 1.1 + index) * 0.002;
+      tower.rotation.y += 0.002;
+    });
+    terrain.position.z = -0.8 + Math.sin(t * 0.22) * 0.18;
+    grid.position.z = terrain.position.z;
+    trailGroup.position.z = Math.sin(t * 0.26) * 0.18;
+    pulse.rotation.z += 0.005;
+    pulse.scale.setScalar(1 + Math.sin(t * 1.8) * 0.08);
+    world.rotation.y = -0.12 + Math.sin(t * 0.18) * 0.08;
 
-    camera.position.x += (pointerX * 0.72 - camera.position.x) * 0.04;
-    camera.position.y += (0.4 - pointerY * 0.42 - camera.position.y) * 0.04;
-    camera.lookAt(0.1, 0.05, -0.7);
+    camera.position.x += (pointerX * 0.82 - camera.position.x) * 0.04;
+    camera.position.y += (1.35 - pointerY * 0.48 - camera.position.y) * 0.04;
+    camera.lookAt(0.8, -0.1, -1.2);
 
     renderer.render(scene, camera);
     window.requestAnimationFrame(animate);
