@@ -66,38 +66,9 @@ button {
   mix-blend-mode: screen;
 }
 
-.prompt-strip {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding: 28px 18px;
-  background: #f4f1ea;
-  color: #151515;
-  font-family: "JetBrains Mono", monospace;
-  font-size: clamp(16px, 2.2vw, 28px);
-  font-weight: 700;
-}
-
-.prompt-strip span {
-  width: 9px;
-  height: 9px;
-  margin-top: 0.65em;
-  border-radius: 50%;
-  background: var(--teal);
-}
-
-.prompt-strip p {
-  margin: 0;
-}
-
-.prompt-strip strong {
-  color: #bd6d31;
-  font-weight: 800;
-}
-
 .stage {
   width: min(1520px, calc(100% - 44px));
-  margin: 0 auto 44px;
+  margin: 22px auto 44px;
   border: 1px solid var(--line);
   background: rgba(4, 8, 14, 0.86);
   box-shadow: var(--shadow);
@@ -658,18 +629,11 @@ cite {
     display: none;
   }
 
-  .prompt-strip {
-    justify-content: flex-start;
-    font-size: 15px;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
   .stage {
     width: 100vw;
     max-width: 100vw;
     overflow: hidden;
-    margin-bottom: 0;
+    margin: 0 0 0;
     border-inline: 0;
   }
 
