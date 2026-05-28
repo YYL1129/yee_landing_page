@@ -1,8 +1,11 @@
 const cursorLight = document.querySelector(".cursor-light");
 const playToggle = document.querySelector("#play-toggle");
 const record = document.querySelector("#record");
+const particleField = document.querySelector(".particle-field");
+const scrollProgress = document.querySelector(".scroll-progress");
 const signalOutput = document.querySelector("#signal-output");
 const signalButtons = document.querySelectorAll("[data-signal]");
+const tiltCards = document.querySelectorAll(".field-notes article, .proof-strip article, .quiet-section article, .signal-console");
 
 const signals = {
   it: "IT Ops: support, access control, troubleshooting, file workflows, and process improvement.",
@@ -59,6 +62,21 @@ function initCursor() {
   });
 }
 
+function initParticles() {
+  if (!particleField) return;
+
+  for (let index = 0; index < 42; index += 1) {
+    const particle = document.createElement("span");
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.setProperty("--move-x", `${Math.random() * 140 - 70}px`);
+    particle.style.animationDuration = `${8 + Math.random() * 12}s`;
+    particle.style.animationDelay = `${Math.random() * -14}s`;
+    particle.style.opacity = `${0.22 + Math.random() * 0.5}`;
+    particle.style.transform = `scale(${0.7 + Math.random() * 1.4})`;
+    particleField.appendChild(particle);
+  }
+}
+
 function initAudio() {
   playToggle?.addEventListener("click", async () => {
     if (!audioContext) {
@@ -89,6 +107,7 @@ function initAudio() {
     }
 
     isPlaying = !isPlaying;
+    document.body.classList.toggle("music-playing", isPlaying);
     playToggle.classList.toggle("is-playing", isPlaying);
     record.classList.toggle("is-paused", !isPlaying);
     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
@@ -160,6 +179,40 @@ function initSignals() {
       signalButtons.forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
       signalOutput.textContent = signals[button.dataset.signal];
+      signalOutput.classList.remove("is-pulsing");
+      window.requestAnimationFrame(() => signalOutput.classList.add("is-pulsing"));
+    });
+  });
+}
+
+function initScrollProgress() {
+  if (!scrollProgress) return;
+
+  const updateProgress = () => {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+    scrollProgress.style.transform = `scaleX(${Math.min(progress, 1)})`;
+  };
+
+  updateProgress();
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  window.addEventListener("resize", updateProgress);
+}
+
+function initTiltCards() {
+  tiltCards.forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+      card.style.setProperty("--tilt-x", `${y * -5}deg`);
+      card.style.setProperty("--tilt-y", `${x * 5}deg`);
+    });
+
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
     });
   });
 }
@@ -185,6 +238,9 @@ function initScrollReveal() {
 
 record?.classList.add("is-paused");
 initCursor();
+initParticles();
 initAudio();
 initSignals();
+initScrollProgress();
+initTiltCards();
 initScrollReveal();
