@@ -85,47 +85,79 @@ function initParticles() {
 
 function initAudio() {
   playToggle?.addEventListener("click", async () => {
-    if (!audioContext) {
-      audioContext = new AudioContext();
-      gainNode = audioContext.createGain();
-      delayNode = audioContext.createDelay(2);
-      delayGain = audioContext.createGain();
-      compressor = audioContext.createDynamicsCompressor();
-
-      gainNode.gain.value = 0;
-      delayNode.delayTime.value = 0.42;
-      delayGain.gain.value = 0.24;
-      compressor.threshold.value = -26;
-      compressor.knee.value = 24;
-      compressor.ratio.value = 6;
-      compressor.attack.value = 0.012;
-      compressor.release.value = 0.32;
-
-      delayNode.connect(delayGain);
-      delayGain.connect(delayNode);
-      delayNode.connect(gainNode);
-      gainNode.connect(compressor);
-      compressor.connect(audioContext.destination);
+    if (isPlaying) {
+      stopAmbient();
+      return;
     }
+
+    await startAmbient();
+  });
+
+  window.setTimeout(() => {
+    startAmbient(true);
+  }, 2800);
+}
+
+function setupAudioGraph() {
+  if (audioContext) return;
+
+  audioContext = new AudioContext();
+  gainNode = audioContext.createGain();
+  delayNode = audioContext.createDelay(2);
+  delayGain = audioContext.createGain();
+  compressor = audioContext.createDynamicsCompressor();
+
+  gainNode.gain.value = 0;
+  delayNode.delayTime.value = 0.42;
+  delayGain.gain.value = 0.24;
+  compressor.threshold.value = -26;
+  compressor.knee.value = 24;
+  compressor.ratio.value = 6;
+  compressor.attack.value = 0.012;
+  compressor.release.value = 0.32;
+
+  delayNode.connect(delayGain);
+  delayGain.connect(delayNode);
+  delayNode.connect(gainNode);
+  gainNode.connect(compressor);
+  compressor.connect(audioContext.destination);
+}
+
+async function startAmbient(isAutoplay = false) {
+  try {
+    setupAudioGraph();
 
     if (audioContext.state === "suspended") {
       await audioContext.resume();
     }
 
-    isPlaying = !isPlaying;
-    document.body.classList.toggle("music-playing", isPlaying);
-    playToggle.classList.toggle("is-playing", isPlaying);
-    record?.classList.toggle("is-paused", !isPlaying);
-    cinemaScene?.classList.toggle("is-live", isPlaying);
+    isPlaying = true;
+    document.body.classList.toggle("music-blocked", false);
+    document.body.classList.toggle("music-playing", true);
+    playToggle?.classList.toggle("is-playing", true);
+    record?.classList.toggle("is-paused", false);
+    cinemaScene?.classList.toggle("is-live", true);
     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.12 : 0, audioContext.currentTime + 0.6);
-
-    if (isPlaying) {
-      startAmbientLoop();
-    } else {
-      window.clearInterval(musicTimer);
+    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.8);
+    startAmbientLoop();
+  } catch (error) {
+    if (isAutoplay) {
+      document.body.classList.add("music-blocked");
     }
-  });
+  }
+}
+
+function stopAmbient() {
+  if (!audioContext || !gainNode) return;
+
+  isPlaying = false;
+  document.body.classList.toggle("music-playing", false);
+  playToggle?.classList.toggle("is-playing", false);
+  record?.classList.toggle("is-paused", true);
+  cinemaScene?.classList.toggle("is-live", false);
+  gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+  gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
+  window.clearInterval(musicTimer);
 }
 
 function playSynthNote(frequency, startTime, duration, level = 0.08, type = "triangle") {

@@ -693,6 +693,117 @@ h1 em {
   animation: coreBeat 2.6s ease-in-out infinite;
 }
 
+.tech-orbit {
+  position: absolute;
+  inset: 12% 9% 25% 42%;
+  z-index: 6;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.tech-icon {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(143, 216, 255, 0.42);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(143, 216, 255, 0.18), rgba(4, 12, 22, 0.54)),
+    rgba(4, 9, 16, 0.72);
+  box-shadow:
+    inset 0 0 26px rgba(143, 216, 255, 0.16),
+    0 18px 60px rgba(0, 0, 0, 0.38),
+    0 0 38px rgba(143, 216, 255, 0.26);
+  color: #dff4ff;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0;
+  animation: techFloat 7s ease-in-out infinite;
+}
+
+.ai-chip {
+  left: 32%;
+  top: 20%;
+  border-radius: 22px;
+}
+
+.ai-chip::before,
+.ai-chip::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 1px solid rgba(143, 216, 255, 0.18);
+  border-radius: inherit;
+}
+
+.laptop-icon {
+  left: 64%;
+  top: 34%;
+  width: 92px;
+  animation-delay: -2.4s;
+}
+
+.laptop-icon::before {
+  content: "";
+  width: 54px;
+  height: 34px;
+  border: 3px solid rgba(223, 244, 255, 0.88);
+  border-bottom-width: 5px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 18px rgba(143, 216, 255, 0.28);
+}
+
+.laptop-icon span {
+  position: absolute;
+  bottom: 17px;
+  width: 68px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(223, 244, 255, 0.82);
+}
+
+.neural-icon {
+  left: 8%;
+  top: 48%;
+  width: 68px;
+  border-radius: 50%;
+  animation-delay: -4.2s;
+}
+
+.neural-icon::before {
+  content: "";
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(223, 244, 255, 0.72);
+  border-radius: 50%;
+}
+
+.neural-icon i {
+  position: absolute;
+  width: 9px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #dff4ff;
+  box-shadow: 0 0 14px rgba(143, 216, 255, 0.9);
+}
+
+.neural-icon i:nth-child(1) {
+  transform: translate(-13px, -10px);
+}
+
+.neural-icon i:nth-child(2) {
+  transform: translate(13px, -4px);
+}
+
+.neural-icon i:nth-child(3) {
+  transform: translate(-1px, 14px);
+}
+
 .floating-operator {
   position: absolute;
   top: 30%;
@@ -1680,6 +1791,21 @@ cite {
   }
 }
 
+@keyframes techFloat {
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(14deg) rotateY(-12deg) rotateZ(-8deg);
+  }
+
+  50% {
+    transform: translate3d(22px, -30px, 80px) rotateX(24deg) rotateY(16deg) rotateZ(8deg);
+    filter: brightness(1.28);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(14deg) rotateY(-12deg) rotateZ(-8deg);
+  }
+}
+
 @keyframes coreBeat {
   50% {
     transform: translate(-50%, -50%) scale(1.16);
@@ -1998,6 +2124,36 @@ cite {
 
   .data-core {
     width: 82px;
+  }
+
+  .tech-orbit {
+    inset: 18% -24% 44% 24%;
+    opacity: 0.78;
+    transform: scale(0.74);
+    transform-origin: center;
+  }
+
+  .tech-icon {
+    width: 56px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  .laptop-icon {
+    width: 66px;
+  }
+
+  .laptop-icon::before {
+    width: 40px;
+    height: 25px;
+    border-width: 2px;
+    border-bottom-width: 4px;
+  }
+
+  .laptop-icon span {
+    bottom: 12px;
+    width: 50px;
+    height: 5px;
   }
 
   .floating-operator {
