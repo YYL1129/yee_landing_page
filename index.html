@@ -20,6 +20,12 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <div class="boot-screen" aria-hidden="true">
+      <div>
+        <span>INITIALISING YEE.SYSTEM</span>
+        <strong>Building signal...</strong>
+      </div>
+    </div>
     <div class="grain" aria-hidden="true"></div>
     <div class="cursor-light" aria-hidden="true"></div>
     <div class="scan-beam" aria-hidden="true"></div>
@@ -32,15 +38,52 @@
           <span></span>
           <strong>Yee</strong>
         </a>
-        <p>EST. MY · SYSTEMS BUILDER</p>
+        <p>MY · DIGITAL WORKBENCH</p>
         <nav aria-label="Main navigation">
           <a href="#notes">Field Notes</a>
           <a href="#signals">Signals</a>
           <a href="#contact">Contact</a>
+          <a class="enter-link" href="#signals">Enter Workbench</a>
         </nav>
       </header>
 
-      <section class="hero">
+      <section class="hero cinematic-hero">
+        <div class="scene-status">
+          <span>IT workflow builder.</span>
+          <span>Automation learner.</span>
+          <span>Studio of one.</span>
+        </div>
+
+        <div class="cinema-scene" aria-hidden="true">
+          <div class="three-stage" id="three-stage"></div>
+          <div class="scene-window"></div>
+          <div class="floating-operator">
+            <span class="head"></span>
+            <span class="body"></span>
+            <span class="arm arm-left"></span>
+            <span class="arm arm-right"></span>
+            <span class="leg leg-left"></span>
+            <span class="leg leg-right"></span>
+          </div>
+          <div class="code-panel panel-one">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="code-panel panel-two">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="scene-object object-one"></div>
+          <div class="scene-object object-two"></div>
+          <div class="scene-object object-three"></div>
+
+          <button class="play-button" id="play-toggle" type="button" aria-label="Play ambient cyber synth">
+            <span></span>
+          </button>
+          <div class="sound-wave" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+
         <div class="hero-copy">
           <p class="meta">NO · 001 &nbsp;&nbsp; AI / IT / AUTOMATION &nbsp;&nbsp; LIVE PROFILE</p>
           <h1>
@@ -57,35 +100,8 @@
             I ask, test, understand, and keep improving until the work becomes clear.
           </p>
           <div class="hero-actions">
-            <a href="#notes">Read the field notes</a>
-            <a href="mailto:zeusyee1247@gmail.com">Email me</a>
-          </div>
-        </div>
-
-        <div class="system-player" aria-label="Interactive systems player">
-          <div class="orbit-dots" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <button class="play-button" id="play-toggle" type="button" aria-label="Play Beethoven piano">
-            <span></span>
-          </button>
-
-          <div class="record-wrap">
-            <div class="equalizer" aria-hidden="true">
-              <span></span><span></span><span></span><span></span><span></span>
-            </div>
-            <div class="record" id="record">
-              <div class="record-label">
-                <strong>Y01</strong>
-                <span>Beethoven Piano</span>
-              </div>
-            </div>
-            <div class="tone-arm">
-              <span></span>
-            </div>
+            <a href="#notes">Read the story</a>
+            <a href="#signals">Enter the workbench</a>
           </div>
         </div>
       </section>
@@ -210,6 +226,7 @@
       </section>
     </main>
 
+    <script src="vendor/three.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
