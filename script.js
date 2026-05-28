@@ -272,16 +272,16 @@ function initThreeHero() {
 
   scene.add(new THREE.AmbientLight(0x8fd8ff, 0.78));
 
-  const keyLight = new THREE.SpotLight(0x8fd8ff, 8.6, 22, Math.PI / 3.5, 0.72, 1.2);
+  const keyLight = new THREE.SpotLight(0x8fd8ff, 10.5, 24, Math.PI / 3.2, 0.72, 1.2);
   keyLight.position.set(-4.8, 4.2, 5.8);
   keyLight.castShadow = true;
   scene.add(keyLight);
 
-  const rimLight = new THREE.PointLight(0xf5f0e8, 4.8, 14);
+  const rimLight = new THREE.PointLight(0xf5f0e8, 6.2, 16);
   rimLight.position.set(4.4, 1.7, 3.8);
   scene.add(rimLight);
 
-  const frontLight = new THREE.PointLight(0x8fd8ff, 3.2, 10);
+  const frontLight = new THREE.PointLight(0x8fd8ff, 5.2, 12);
   frontLight.position.set(0.8, -0.5, 5.5);
   scene.add(frontLight);
 
@@ -426,19 +426,20 @@ function initThreeHero() {
 
   const animate = () => {
     const t = clock.getElapsedTime();
-    figure.position.y = 0.62 + Math.sin(t * 0.75) * 0.28;
-    figure.rotation.z = -0.34 + Math.sin(t * 0.52) * 0.08;
-    figure.rotation.y = -0.24 + Math.sin(t * 0.48) * 0.08;
+    figure.position.x = 1.15 + Math.sin(t * 0.52) * 0.18;
+    figure.position.y = 0.62 + Math.sin(t * 0.85) * 0.42;
+    figure.rotation.z = -0.34 + Math.sin(t * 0.62) * 0.16;
+    figure.rotation.y = -0.24 + Math.sin(t * 0.58) * 0.18;
 
     panels.children.forEach((panel, index) => {
-      panel.position.y += Math.sin(t * 0.9 + index) * 0.0019;
-      panel.rotation.z += Math.sin(t * 0.7 + index) * 0.0008;
+      panel.position.y += Math.sin(t * 1.2 + index) * 0.0042;
+      panel.rotation.z += Math.sin(t * 0.9 + index) * 0.0022;
     });
 
     objects.children.forEach((object, index) => {
       object.rotation.x += 0.004 + index * 0.001;
       object.rotation.y += 0.006 + index * 0.001;
-      object.position.y += Math.sin(t + index) * 0.0016;
+      object.position.y += Math.sin(t * 1.4 + index) * 0.004;
     });
 
     orbit.rotation.z += 0.002;
