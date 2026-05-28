@@ -19,37 +19,34 @@ let pianoTimer;
 let melodyIndex = 0;
 let isPlaying = false;
 
-const annenPolkaMelody = [
-  { note: 783.99, time: 0, length: 0.18 },
-  { note: 987.77, time: 0.22, length: 0.18 },
-  { note: 1174.66, time: 0.44, length: 0.2 },
-  { note: 1567.98, time: 0.68, length: 0.32 },
-  { note: 1174.66, time: 1.04, length: 0.18 },
-  { note: 987.77, time: 1.26, length: 0.18 },
-  { note: 880, time: 1.48, length: 0.2 },
-  { note: 783.99, time: 1.72, length: 0.42 },
-  { note: 880, time: 2.26, length: 0.18 },
-  { note: 1046.5, time: 2.48, length: 0.18 },
-  { note: 1318.51, time: 2.7, length: 0.2 },
-  { note: 1760, time: 2.94, length: 0.32 },
-  { note: 1318.51, time: 3.3, length: 0.18 },
-  { note: 1046.5, time: 3.52, length: 0.18 },
-  { note: 987.77, time: 3.74, length: 0.2 },
-  { note: 880, time: 3.98, length: 0.42 },
-  { note: 783.99, time: 4.5, length: 0.2 },
-  { note: 739.99, time: 4.74, length: 0.2 },
-  { note: 659.25, time: 4.98, length: 0.2 },
-  { note: 587.33, time: 5.22, length: 0.3 },
-  { note: 659.25, time: 5.58, length: 0.2 },
-  { note: 739.99, time: 5.82, length: 0.2 },
-  { note: 783.99, time: 6.06, length: 0.52 }
+const beethovenMelody = [
+  { note: 659.25, time: 0, length: 0.22 },
+  { note: 622.25, time: 0.28, length: 0.22 },
+  { note: 659.25, time: 0.56, length: 0.22 },
+  { note: 622.25, time: 0.84, length: 0.22 },
+  { note: 659.25, time: 1.12, length: 0.22 },
+  { note: 493.88, time: 1.44, length: 0.24 },
+  { note: 587.33, time: 1.74, length: 0.24 },
+  { note: 523.25, time: 2.04, length: 0.24 },
+  { note: 440, time: 2.38, length: 0.58 },
+  { note: 261.63, time: 3.18, length: 0.24 },
+  { note: 329.63, time: 3.48, length: 0.24 },
+  { note: 440, time: 3.78, length: 0.24 },
+  { note: 493.88, time: 4.12, length: 0.58 },
+  { note: 329.63, time: 4.86, length: 0.24 },
+  { note: 415.3, time: 5.16, length: 0.24 },
+  { note: 493.88, time: 5.46, length: 0.24 },
+  { note: 523.25, time: 5.8, length: 0.58 }
 ];
 
-const polkaBass = [
-  { root: 196, chord: [392, 493.88, 587.33] },
-  { root: 220, chord: [440, 523.25, 659.25] },
-  { root: 146.83, chord: [293.66, 369.99, 440] },
-  { root: 196, chord: [392, 493.88, 587.33] }
+const beethovenBass = [
+  { note: 220, time: 0, length: 0.72 },
+  { note: 329.63, time: 0.72, length: 0.52 },
+  { note: 440, time: 1.42, length: 0.52 },
+  { note: 164.81, time: 2.38, length: 0.72 },
+  { note: 329.63, time: 3.18, length: 0.52 },
+  { note: 415.3, time: 4.12, length: 0.52 },
+  { note: 130.81, time: 5.8, length: 0.88 }
 ];
 
 function initCursor() {
@@ -76,7 +73,7 @@ function initAudio() {
     playToggle.classList.toggle("is-playing", isPlaying);
     record.classList.toggle("is-paused", !isPlaying);
     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.24 : 0, audioContext.currentTime + 0.28);
+    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.2 : 0, audioContext.currentTime + 0.28);
 
     if (isPlaying) {
       startPianoLoop();
@@ -116,16 +113,14 @@ function playPianoNote(frequency, startTime, duration, level = 0.22) {
 
 function schedulePianoBar() {
   const now = audioContext.currentTime + 0.04;
-  const bass = polkaBass[melodyIndex % polkaBass.length];
 
-  for (let beat = 0; beat < 7; beat += 1) {
-    const beatTime = now + beat * 0.92;
-    playPianoNote(bass.root, beatTime, 0.26, 0.11);
-    bass.chord.forEach((note) => playPianoNote(note, beatTime + 0.42, 0.22, 0.055));
-  }
+  beethovenBass.forEach((item) => {
+    playPianoNote(item.note, now + item.time, item.length, 0.095);
+    playPianoNote(item.note * 2, now + item.time + 0.04, item.length * 0.86, 0.045);
+  });
 
-  annenPolkaMelody.forEach((item) => {
-    playPianoNote(item.note, now + item.time, item.length, 0.18);
+  beethovenMelody.forEach((item) => {
+    playPianoNote(item.note, now + item.time, item.length, 0.17);
   });
 
   melodyIndex += 1;
@@ -134,7 +129,7 @@ function schedulePianoBar() {
 function startPianoLoop() {
   window.clearInterval(pianoTimer);
   schedulePianoBar();
-  pianoTimer = window.setInterval(schedulePianoBar, 6600);
+  pianoTimer = window.setInterval(schedulePianoBar, 6800);
 }
 
 function initSignals() {

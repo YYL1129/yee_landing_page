@@ -5,7 +5,7 @@
   --muted: #8f949d;
   --line: rgba(245, 240, 232, 0.12);
   --panel: rgba(12, 16, 24, 0.78);
-  --orange: #f3a15d;
+  --accent: #8fd8ff;
   --teal: #58b6a6;
   --cream: #f5f0e8;
   --shadow: 0 32px 90px rgba(0, 0, 0, 0.55);
@@ -25,7 +25,7 @@ body {
   margin: 0;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 72% 38%, rgba(243, 161, 93, 0.12), transparent 28%),
+    radial-gradient(circle at 72% 38%, rgba(143, 216, 255, 0.14), transparent 28%),
     radial-gradient(circle at 24% 82%, rgba(88, 182, 166, 0.12), transparent 25%),
     var(--bg);
   color: var(--ink);
@@ -59,8 +59,8 @@ button {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(243, 161, 93, 0.72);
-  box-shadow: 0 0 42px rgba(243, 161, 93, 0.85);
+  background: rgba(143, 216, 255, 0.72);
+  box-shadow: 0 0 42px rgba(143, 216, 255, 0.85);
   pointer-events: none;
   transform: translate(-50%, -50%);
   mix-blend-mode: screen;
@@ -96,7 +96,7 @@ button {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--orange);
+  background: var(--accent);
 }
 
 .site-header p,
@@ -124,7 +124,7 @@ button {
 }
 
 .site-header a:hover {
-  color: var(--orange);
+  color: var(--accent);
 }
 
 .hero {
@@ -167,7 +167,7 @@ h1 {
 
 h1 em {
   display: block;
-  color: var(--orange);
+  color: var(--accent);
   font-style: italic;
 }
 
@@ -215,12 +215,12 @@ h1 em {
 .hero-actions a:first-child,
 .contact-actions a:first-child {
   color: #111;
-  background: var(--orange);
+  background: var(--accent);
 }
 
 .hero-actions a:hover,
 .contact-actions a:hover {
-  border-color: var(--orange);
+  border-color: var(--accent);
   transform: translateY(-3px);
 }
 
@@ -244,7 +244,7 @@ h1 em {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 50%;
   background:
-    radial-gradient(circle, #f9a852 0 12%, #332017 13% 19%, transparent 20%),
+    radial-gradient(circle, #8fd8ff 0 12%, #173044 13% 19%, transparent 20%),
     repeating-radial-gradient(circle, rgba(255, 255, 255, 0.12) 0 1px, transparent 2px 12px),
     radial-gradient(circle at 42% 34%, rgba(255, 255, 255, 0.13), transparent 18%),
     #090a0d;
@@ -267,7 +267,7 @@ h1 em {
   height: 118px;
   place-items: center;
   border-radius: 50%;
-  background: var(--orange);
+  background: var(--accent);
   color: #1a0f09;
   text-align: center;
   transform: translate(-50%, -50%);
@@ -332,7 +332,7 @@ h1 em {
 }
 
 .play-button:hover {
-  background: rgba(243, 161, 93, 0.76);
+  background: rgba(143, 216, 255, 0.76);
   transform: translate(-50%, -50%) scale(1.06);
 }
 
@@ -363,7 +363,7 @@ h1 em {
   width: max-content;
   gap: 46px;
   padding: 17px 0;
-  color: var(--orange);
+  color: var(--accent);
   font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   font-weight: 800;
@@ -391,7 +391,7 @@ h1 em {
 }
 
 .note-number {
-  color: var(--orange);
+  color: var(--accent);
 }
 
 h2 {
@@ -474,7 +474,7 @@ h2 {
 .signal-buttons button.active,
 .signal-buttons button:hover {
   color: #111;
-  background: var(--orange);
+  background: var(--accent);
 }
 
 #signal-output {
@@ -482,10 +482,10 @@ h2 {
   min-height: 150px;
   margin: 0 22px 22px;
   padding: 22px;
-  border: 1px solid rgba(243, 161, 93, 0.28);
+  border: 1px solid rgba(143, 216, 255, 0.28);
   border-radius: var(--radius);
-  color: var(--orange);
-  background: rgba(243, 161, 93, 0.08);
+  color: var(--accent);
+  background: rgba(143, 216, 255, 0.08);
   font-family: "JetBrains Mono", monospace;
   line-height: 1.7;
 }
@@ -503,7 +503,7 @@ h2 {
 }
 
 .proof-strip small {
-  color: var(--orange);
+  color: var(--accent);
 }
 
 h3 {
