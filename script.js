@@ -19,18 +19,38 @@ let pianoTimer;
 let melodyIndex = 0;
 let isPlaying = false;
 
-const venicePiano = [
-  { note: 392, time: 0, length: 0.72 },
-  { note: 493.88, time: 0.78, length: 0.52 },
-  { note: 587.33, time: 1.28, length: 0.86 },
-  { note: 523.25, time: 2.1, length: 0.58 },
-  { note: 440, time: 2.72, length: 0.82 },
-  { note: 349.23, time: 3.62, length: 0.62 },
-  { note: 392, time: 4.2, length: 1.1 },
-  { note: 329.63, time: 5.42, length: 0.82 }
+const annenPolkaMelody = [
+  { note: 783.99, time: 0, length: 0.18 },
+  { note: 987.77, time: 0.22, length: 0.18 },
+  { note: 1174.66, time: 0.44, length: 0.2 },
+  { note: 1567.98, time: 0.68, length: 0.32 },
+  { note: 1174.66, time: 1.04, length: 0.18 },
+  { note: 987.77, time: 1.26, length: 0.18 },
+  { note: 880, time: 1.48, length: 0.2 },
+  { note: 783.99, time: 1.72, length: 0.42 },
+  { note: 880, time: 2.26, length: 0.18 },
+  { note: 1046.5, time: 2.48, length: 0.18 },
+  { note: 1318.51, time: 2.7, length: 0.2 },
+  { note: 1760, time: 2.94, length: 0.32 },
+  { note: 1318.51, time: 3.3, length: 0.18 },
+  { note: 1046.5, time: 3.52, length: 0.18 },
+  { note: 987.77, time: 3.74, length: 0.2 },
+  { note: 880, time: 3.98, length: 0.42 },
+  { note: 783.99, time: 4.5, length: 0.2 },
+  { note: 739.99, time: 4.74, length: 0.2 },
+  { note: 659.25, time: 4.98, length: 0.2 },
+  { note: 587.33, time: 5.22, length: 0.3 },
+  { note: 659.25, time: 5.58, length: 0.2 },
+  { note: 739.99, time: 5.82, length: 0.2 },
+  { note: 783.99, time: 6.06, length: 0.52 }
 ];
 
-const bassNotes = [196, 220, 174.61, 196];
+const polkaBass = [
+  { root: 196, chord: [392, 493.88, 587.33] },
+  { root: 220, chord: [440, 523.25, 659.25] },
+  { root: 146.83, chord: [293.66, 369.99, 440] },
+  { root: 196, chord: [392, 493.88, 587.33] }
+];
 
 function initCursor() {
   window.addEventListener("pointermove", (event) => {
@@ -56,7 +76,7 @@ function initAudio() {
     playToggle.classList.toggle("is-playing", isPlaying);
     record.classList.toggle("is-paused", !isPlaying);
     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.28 : 0, audioContext.currentTime + 0.28);
+    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.24 : 0, audioContext.currentTime + 0.28);
 
     if (isPlaying) {
       startPianoLoop();
@@ -96,12 +116,15 @@ function playPianoNote(frequency, startTime, duration, level = 0.22) {
 
 function schedulePianoBar() {
   const now = audioContext.currentTime + 0.04;
-  const bass = bassNotes[melodyIndex % bassNotes.length];
+  const bass = polkaBass[melodyIndex % polkaBass.length];
 
-  playPianoNote(bass, now, 1.8, 0.12);
-  playPianoNote(bass * 1.5, now + 0.04, 1.4, 0.08);
+  for (let beat = 0; beat < 7; beat += 1) {
+    const beatTime = now + beat * 0.92;
+    playPianoNote(bass.root, beatTime, 0.26, 0.11);
+    bass.chord.forEach((note) => playPianoNote(note, beatTime + 0.42, 0.22, 0.055));
+  }
 
-  venicePiano.forEach((item) => {
+  annenPolkaMelody.forEach((item) => {
     playPianoNote(item.note, now + item.time, item.length, 0.18);
   });
 
@@ -111,7 +134,7 @@ function schedulePianoBar() {
 function startPianoLoop() {
   window.clearInterval(pianoTimer);
   schedulePianoBar();
-  pianoTimer = window.setInterval(schedulePianoBar, 6400);
+  pianoTimer = window.setInterval(schedulePianoBar, 6600);
 }
 
 function initSignals() {
