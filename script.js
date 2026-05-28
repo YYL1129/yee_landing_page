@@ -15,6 +15,9 @@ const signals = {
 
 let audioContext;
 let gainNode;
+let delayNode;
+let delayGain;
+let compressor;
 let pianoTimer;
 let melodyIndex = 0;
 let isPlaying = false;
@@ -61,8 +64,24 @@ function initAudio() {
     if (!audioContext) {
       audioContext = new AudioContext();
       gainNode = audioContext.createGain();
+      delayNode = audioContext.createDelay(2);
+      delayGain = audioContext.createGain();
+      compressor = audioContext.createDynamicsCompressor();
+
       gainNode.gain.value = 0;
-      gainNode.connect(audioContext.destination);
+      delayNode.delayTime.value = 0.28;
+      delayGain.gain.value = 0.16;
+      compressor.threshold.value = -26;
+      compressor.knee.value = 24;
+      compressor.ratio.value = 6;
+      compressor.attack.value = 0.012;
+      compressor.release.value = 0.32;
+
+      delayNode.connect(delayGain);
+      delayGain.connect(delayNode);
+      delayNode.connect(gainNode);
+      gainNode.connect(compressor);
+      compressor.connect(audioContext.destination);
     }
 
     if (audioContext.state === "suspended") {
@@ -73,7 +92,7 @@ function initAudio() {
     playToggle.classList.toggle("is-playing", isPlaying);
     record.classList.toggle("is-paused", !isPlaying);
     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.2 : 0, audioContext.currentTime + 0.28);
+    gainNode.gain.linearRampToValueAtTime(isPlaying ? 0.16 : 0, audioContext.currentTime + 0.4);
 
     if (isPlaying) {
       startPianoLoop();
@@ -83,44 +102,47 @@ function initAudio() {
   });
 }
 
-function playPianoNote(frequency, startTime, duration, level = 0.22) {
+function playPianoNote(frequency, startTime, duration, level = 0.16) {
   const noteGain = audioContext.createGain();
   const tone = audioContext.createOscillator();
   const shimmer = audioContext.createOscillator();
   const filter = audioContext.createBiquadFilter();
 
-  tone.type = "triangle";
+  tone.type = "sine";
   shimmer.type = "sine";
   tone.frequency.value = frequency;
-  shimmer.frequency.value = frequency * 2.01;
+  shimmer.frequency.value = frequency * 2;
   filter.type = "lowpass";
-  filter.frequency.value = 2400;
+  filter.frequency.value = 1450;
+  filter.Q.value = 0.6;
 
   noteGain.gain.setValueAtTime(0.0001, startTime);
-  noteGain.gain.exponentialRampToValueAtTime(level, startTime + 0.025);
-  noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+  noteGain.gain.exponentialRampToValueAtTime(level, startTime + 0.055);
+  noteGain.gain.exponentialRampToValueAtTime(level * 0.52, startTime + duration * 0.55);
+  noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration + 0.72);
 
   tone.connect(filter);
   shimmer.connect(filter);
   filter.connect(noteGain);
   noteGain.connect(gainNode);
+  noteGain.connect(delayNode);
 
   tone.start(startTime);
   shimmer.start(startTime);
-  tone.stop(startTime + duration + 0.08);
-  shimmer.stop(startTime + duration + 0.08);
+  tone.stop(startTime + duration + 0.82);
+  shimmer.stop(startTime + duration + 0.82);
 }
 
 function schedulePianoBar() {
   const now = audioContext.currentTime + 0.04;
 
   beethovenBass.forEach((item) => {
-    playPianoNote(item.note, now + item.time, item.length, 0.095);
-    playPianoNote(item.note * 2, now + item.time + 0.04, item.length * 0.86, 0.045);
+    playPianoNote(item.note, now + item.time, item.length + 0.3, 0.07);
+    playPianoNote(item.note * 2, now + item.time + 0.05, item.length + 0.16, 0.032);
   });
 
   beethovenMelody.forEach((item) => {
-    playPianoNote(item.note, now + item.time, item.length, 0.17);
+    playPianoNote(item.note, now + item.time, item.length + 0.42, 0.12);
   });
 
   melodyIndex += 1;
