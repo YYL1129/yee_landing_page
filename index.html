@@ -22,6 +22,9 @@
   <body>
     <div class="grain" aria-hidden="true"></div>
     <div class="cursor-light" aria-hidden="true"></div>
+    <div class="scan-beam" aria-hidden="true"></div>
+    <div class="particle-field" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"></div>
 
     <main class="stage" id="top">
       <header class="site-header">
@@ -60,11 +63,20 @@
         </div>
 
         <div class="system-player" aria-label="Interactive systems player">
+          <div class="orbit-dots" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <button class="play-button" id="play-toggle" type="button" aria-label="Play Beethoven piano">
             <span></span>
           </button>
 
           <div class="record-wrap">
+            <div class="equalizer" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
             <div class="record" id="record">
               <div class="record-label">
                 <strong>Y01</strong>
